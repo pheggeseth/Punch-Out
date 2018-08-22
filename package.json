@@ -1,0 +1,17 @@
+{
+  "name": "time-tracker",
+  "version": "1.0.0",
+  "description": "One Paragraph of project description goes here. Link to the live version of the app if it's hosted on Heroku.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server/server.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.3",
+    "pg": "^7.4.3"
+  }
+}
