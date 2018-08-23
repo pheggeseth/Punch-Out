@@ -1,7 +1,26 @@
+input {
+  box-sizing: border-box;
+}
+
 .container {
   width: 800px;
   max-width: 90%;
   padding: 20px;
   border: 1px solid;
   margin: 20px auto;
+}
+.entry-form {
+  width: 100%;
+  display: grid;
+  grid-template-rows: 30px 30px;
+  grid-template-columns: 3fr 1.5fr 1.5fr 1.5fr 1fr;
+  grid-gap: 15px;
+  justify-content: center;
+  align-items: center;
+}
+.entry-form > input, .entry-form > select, .entry-form > button {
+  height: 100%;
+}
+.entry-form-text {
+  grid-column: 1 / span 5;
 }

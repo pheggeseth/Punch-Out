@@ -1,33 +1,13 @@
 <h2>Add Entry</h2>
-<form>
-  <div layout="row">
-    <md-input-container>
-      <label>What did you do?</label>
-      <input type="text" ng-model="vm.newEntry.text">
-    </md-input-container>
-  </div>
-  <div layout-gt-xs="row">
-    <md-input-container>
-      <label>Project</label>
-      <md-select ng-model="vm.newEntry.project">
-        <md-option ng-repeat="project in vm.projects" ng-value="project">{{project}}</md-option>
-      </md-select>
-    </md-input-container>
-    <md-input-container>
-      <md-datepicker ng-model="vm.newEntry.date" md-placeholder="Date"></md-datepicker>
-    </md-input-container>
-    <md-input-container class="md-block">
-      <label>Start Time</label>
-      <input type='text' ng-model="vm.newEntry.start"/>
-    </md-input-container>
-    <md-input-container class="md-block">
-      <label>End Time</label>
-      <input type='text' ng-model="vm.newEntry.end"/>
-    </md-input-container>
-    <md-input-container class="md-block">
-      <md-button class="md-primary md-raised">Submit</md-button>
-    </md-input-container>
-  </div>
+<form class="entry-form" ng-submit="vm.addEntry()">
+  <input required ng-model="vm.newEntry.text" type="text" class="entry-form-text" placeholder="What did you do?" />
+  <select required ng-model="vm.newEntry.project_id" ng-options="project.id as project.name for project in vm.projects" />
+    <!-- <option disabled selected value>Project</option> -->
+  </select>
+  <input required ng-model="vm.newEntry.entry_date" type="date" required />
+  <input required ng-model="vm.newEntry.start_time" type="time" step="900" />
+  <input required ng-model="vm.newEntry.end_time" type="time" step="900" />
+  <button type="submit">Submit</button>
 </form>
 <h2>History</h2>
 <table>

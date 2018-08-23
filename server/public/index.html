@@ -11,10 +11,10 @@
   <script src="./vendors/angular-route.min.js"></script>
 
   <!-- AngularJS Material -->
-  <link rel="stylesheet" href="./vendors/angular-material.css">
-  <script src="./vendors/angular-animate.min.js"></script>
+  <!-- <link rel="stylesheet" href="./vendors/angular-material.css"> -->
+  <!-- <script src="./vendors/angular-animate.min.js"></script>
   <script src="./vendors/angular-aria.min.js"></script>
-  <script src="./vendors/angular-material.min.js"></script>
+  <script src="./vendors/angular-material.min.js"></script> -->
 
   <!-- Client JS -->
   <script src="./scripts/client.js"></script>
@@ -26,9 +26,10 @@
   <link rel="stylesheet" type="text/css" media="screen" href="./styles/style.css" />
 </head>
 <body ng-app="punchout">
-  <div class="container" layout="column" layout-align="center start">
+  <!-- <div class="container" layout="column" layout-align="center start"> -->
+  <div class="container">
     <h1>Punch Out</h1>
-    <md-nav-bar aria-label="navbar">
+    <!-- <md-nav-bar aria-label="navbar">
       <md-nav-item md-nav-href="#!/entries" aria-label="Add Entry">
         Add Entry
       </md-nav-item>
@@ -38,7 +39,7 @@
       <md-nav-item md-nav-href="#!/reports" aria-label="Reports">
         Reports
       </md-nav-item>
-    </md-nav-bar>
+    </md-nav-bar> -->
     <ng-view></ng-view>
   </div>
 </body>
