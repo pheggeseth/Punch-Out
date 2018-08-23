@@ -28,7 +28,6 @@ SELECT * FROM entries;
 
 -- get all entries with entry_date formated as 'MM/DD/YY', along with "project_name" and "hours"
 SELECT "entries".*,
-	to_char("entries"."entry_date", 'MM/DD/YY') AS "entry_date",
 	"projects"."name" as "project_name", 
 	DATE_PART('hour', "entries"."end_time"::time - "entries"."start_time"::time) + 
 	DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60 AS "hours" 

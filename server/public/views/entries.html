@@ -8,7 +8,7 @@
     ng-model="vm.newEntry.entry_date" 
     ng-focus="vm.addDateType = 'date'" 
     ng-blur="vm.addDateType = 'text'" 
-    type="{{vm.dateType}}" 
+    type="{{vm.addDateType}}" 
     placeholder="Date" />
   <input required 
     ng-model="vm.newEntry.start_time" 
@@ -51,7 +51,7 @@
     <tr ng-dblclick="vm.editEntry($index)" height="30px" ng-repeat="entry in vm.entries | orderBy:vm.sort.column:vm.sort.reverse">
       <td ng-hide="vm.editingEntry.id === entry.id">{{entry.text}}</td>
       <td ng-hide="vm.editingEntry.id === entry.id">{{entry.project_name}}</td>
-      <td ng-hide="vm.editingEntry.id === entry.id">{{entry.entry_date}}</td>
+      <td ng-hide="vm.editingEntry.id === entry.id">{{entry.entry_date | date:'M/d/yy'}}</td>
       <td ng-hide="vm.editingEntry.id === entry.id">{{entry.hours}}</td>
       <td class="delete" ng-click="vm.deleteEntry(entry.id)" ng-hide="vm.editingEntry.id === entry.id">X</td>
       <td ng-show="vm.editingEntry.id === entry.id">
@@ -63,12 +63,18 @@
         </select>
       </td>
       <td ng-show="vm.editingEntry.id === entry.id">
-        <input required 
+        <!-- <input required 
           ng-model="vm.editingEntry.entry_date" 
           ng-focus="vm.editDateType = 'date'" 
           ng-blur="vm.editDateType = 'text'" 
           type="{{vm.editDateType}}" 
           value="vm.editingEntry.entry_date"
+          placeholder="Date" /> -->
+        <input
+          ng-model="vm.editingEntry.entry_date" 
+          
+          type="date" 
+          
           placeholder="Date" />
       </td>
       <td ng-show="vm.editingEntry.id === entry.id">
