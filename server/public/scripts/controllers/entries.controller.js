@@ -34,13 +34,26 @@ app.controller('EntriesController', ['$http', function($http) {
     }
   ];
   vm.getEntries = function() {
-    
-  }
+    $http.get('/entries')
+      .then(function(response) {
+        console.log('/entries GET success:', response);
+        vm.entries = response.data.map(addEntryHours);
+      }).catch(function(error) {
+        console.log('/entries GET error:', error);
+      });
+  };
   vm.addEntry = function() {
     console.log('add new entry:', vm.newEntry);
     
   };
   vm.deleteEntry = function(id) {
     console.log('delete entry:', id);
-  }
+  };
+
+  vm.getEntries(); // get all entries on controller load
 }]);
+
+function addEntryHours(entry) {
+  entry.hours = 'HOURS';
+  return entry;
+}

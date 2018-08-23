@@ -38,8 +38,8 @@
   <tbody>
     <tr height="30px" ng-repeat="entry in vm.entries">
       <td>{{entry.text}}</td>
-      <td>{{entry.project}}</td>
-      <td>{{entry.date}}</td>
+      <td>{{entry.project_id}}</td>
+      <td>{{entry.entry_date}}</td>
       <td>{{entry.hours}}</td>
       <td class="delete" ng-click="vm.deleteEntry(entry.id)">X</td>
     </tr>

@@ -8,10 +8,12 @@ app.use(bodyParser.urlencoded({extended: true}));
 app.use(bodyParser.json()); // This line is required for Angular
 
 // import routes from router
-const modelRouter = require('./routes/model.router.js');
+const entriesRouter = require('./routes/entries.router.js');
+const projectsRouter = require('./routes/projects.router.js');
 
 // use routes in router given a base route
-app.use('/model', modelRouter);
+app.use('/entries', entriesRouter);
+app.use('/projects', projectsRouter);
 
 // Static files
 app.use(express.static('server/public'));
