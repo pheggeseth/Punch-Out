@@ -9,22 +9,11 @@ app.controller('EntriesController', ['$http', function ($http) {
     start_time: '',
     end_time: ''
   };
-
-  vm.entries = [{
-      id: 1,
-      text: 'first entry',
-      project: 'project 1',
-      date: '8/8/18',
-      hours: 2
-    },
-    {
-      id: 2,
-      text: 'second entry',
-      project: 'project 2',
-      date: '9/9/19',
-      hours: 4
-    }
-  ];
+  vm.entries = [];
+  vm.sort = {
+    column: '',
+    reverse: null
+  };
 
   vm.projects = [];
   vm.getEntries = function () {
@@ -63,6 +52,15 @@ app.controller('EntriesController', ['$http', function ($http) {
     }).catch(function(error) {
       console.log(route + ' DELETE error:', error);
     });
+  };
+
+  vm.sortEntries = function(property) {
+    if (vm.sort.reverse === null || vm.sort.column !== property) {
+      vm.sort.reverse = false;
+    } else {
+      vm.sort.reverse = !vm.sort.reverse;
+    }
+    vm.sort.column = property;
   };
 
   vm.getEntries(); // get all entries on controller load

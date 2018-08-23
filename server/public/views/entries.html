@@ -27,12 +27,25 @@
   <button type="submit">Submit</button>
 </form>
 <h2>History</h2>
+{{vm.sort}}
 <table>
   <thead>
-    <th>Entry</th>
-    <th width="30%">Project</th>
-    <th width="10%">Date</th>
-    <th width="10%">Hours</th>
+    <th ng-class="{sort: vm.sort.column === 'text', reverse: vm.sort.reverse}"
+        ng-click="vm.sortEntries('text')">
+      Entry
+    </th>
+    <th ng-class="{sort: vm.sort.column === 'project_name', reverse: vm.sort.reverse}"
+        ng-click="vm.sortEntries('project_name')" width="30%">
+      Project
+    </th>
+    <th ng-class="{sort: vm.sort.column === 'entry_date', reverse: vm.sort.reverse}"
+        ng-click="vm.sortEntries('entry_date')" width="10%">
+      Date
+    </th>
+    <th ng-class="{sort: vm.sort.column === 'hours', reverse: vm.sort.reverse}" 
+        ng-click="vm.sortEntries('hours')" width="10%">
+      Hours
+    </th>
     <th width="5%"></th>
   </thead>
   <tbody>

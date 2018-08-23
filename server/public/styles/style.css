@@ -58,6 +58,9 @@ button.delete-entry {
   justify-content: center;
   align-items: center;
 }
-form.edit-project-name {
+form.edit-project-name, th {
   user-select: none;
+}
+th:hover {
+  cursor: pointer;
 }
