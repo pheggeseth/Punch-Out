@@ -9,7 +9,7 @@ app.controller('ProjectsController', ['$http', function($http) {
       .then(function(response) {
         console.log('/projects GET success:', response.data);
         vm.projects = response.data;
-        
+
       })
       .catch(function(error) {
         console.log('/projects GET error:', error);
@@ -22,6 +22,7 @@ app.controller('ProjectsController', ['$http', function($http) {
       .then(function(response) {
         console.log('/projects POST success:', response);
         vm.projects.push(Object.assign({}, vm.newProject));
+        vm.newProject.name = '';
       })
       .catch(function(error) {
         console.log('/projects POST error:', error);

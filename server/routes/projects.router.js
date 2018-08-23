@@ -6,10 +6,17 @@ const pool = require('../modules/pool');
 router.get('/', (req, res) => {
   console.log('/projects GET hit');
   const queryText = `SELECT "projects".*, 
-	SUM(DATE_PART('hour', "entries"."end_time"::time - "entries"."start_time"::time) + 
-		DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60) 
-		AS "total_hours" 
-	FROM "projects" LEFT JOIN "entries" ON "projects"."id" = "entries"."project_id" GROUP BY "projects"."id" ORDER BY "projects"."id";`;
+    COALESCE(
+      SUM(
+        DATE_PART('hour', "entries"."end_time"::time - "entries"."start_time"::time) + 
+        DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60
+      )
+    , 0) AS "total_hours" 
+    FROM "projects" 
+    LEFT JOIN "entries" ON "projects"."id" = "entries"."project_id" 
+    GROUP BY "projects"."id" 
+    ORDER BY "projects"."id";`;
+    
   pool.query(queryText)
     .then(results => res.send(results.rows))
     .catch(error => {
