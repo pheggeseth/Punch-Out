@@ -61,6 +61,18 @@ button.delete-entry {
 form.edit-project-name, th {
   user-select: none;
 }
+th {
+  height: 30px;
+}
 th:hover {
   cursor: pointer;
+}
+th.sort {
+  background-color: gainsboro;
+}
+th.sort::after {
+  content: '▲'
+}
+th.sort.reverse::after {
+  content: '▼'
 }

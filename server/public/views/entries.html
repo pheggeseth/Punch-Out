@@ -49,7 +49,7 @@
     <th width="5%"></th>
   </thead>
   <tbody>
-    <tr height="30px" ng-repeat="entry in vm.entries">
+    <tr height="30px" ng-repeat="entry in vm.entries | orderBy:vm.sort.column:vm.sort.reverse">
       <td>{{entry.text}}</td>
       <td>{{entry.project_name}}</td>
       <td>{{entry.entry_date}}</td>
