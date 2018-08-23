@@ -29,19 +29,19 @@
 <h2>History</h2>
 <table>
   <thead>
-    <th>Entry</th>
+    <th width="40%">Entry</th>
     <th>Project</th>
-    <th>Date</th>
-    <th>Hours</th>
-    <th>Actions</th>
+    <th width="10%">Date</th>
+    <th width="10%">Hours</th>
+    <th width="10%">Actions</th>
   </thead>
   <tbody>
-    <tr ng-repeat="entry in vm.entries">
+    <tr height="30px" ng-repeat="entry in vm.entries">
       <td>{{entry.text}}</td>
       <td>{{entry.project}}</td>
       <td>{{entry.date}}</td>
       <td>{{entry.hours}}</td>
-      <td><button ng-click="vm.deleteEntry(entry.id)">Delete</button></td>
+      <td class="delete" ng-click="vm.deleteEntry(entry.id)">X</td>
     </tr>
   </tbody>
 </table>
