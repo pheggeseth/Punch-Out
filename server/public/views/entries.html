@@ -6,8 +6,8 @@
   </select>
   <input required 
     ng-model="vm.newEntry.entry_date" 
-    ng-focus="vm.dateType = 'date'" 
-    ng-blur="vm.dateType = 'text'" 
+    ng-focus="vm.addDateType = 'date'" 
+    ng-blur="vm.addDateType = 'text'" 
     type="{{vm.dateType}}" 
     placeholder="Date" />
   <input required 
@@ -49,11 +49,31 @@
   </thead>
   <tbody>
     <tr ng-dblclick="vm.editEntry($index)" height="30px" ng-repeat="entry in vm.entries | orderBy:vm.sort.column:vm.sort.reverse">
-      <td>{{entry.text}}</td>
-      <td>{{entry.project_name}}</td>
-      <td>{{entry.entry_date}}</td>
-      <td>{{entry.hours}}</td>
+      <td ng-hide="vm.editingEntry.id === entry.id">{{entry.text}}</td>
+      <td ng-hide="vm.editingEntry.id === entry.id">{{entry.project_name}}</td>
+      <td ng-hide="vm.editingEntry.id === entry.id">{{entry.entry_date}}</td>
+      <td ng-hide="vm.editingEntry.id === entry.id">{{entry.hours}}</td>
       <td class="delete" ng-click="vm.deleteEntry(entry.id)" ng-hide="vm.editingEntry.id === entry.id">X</td>
+      <td ng-show="vm.editingEntry.id === entry.id">
+        <input ng-model="vm.editingEntry.text" type="text">
+      </td>
+      <td ng-show="vm.editingEntry.id === entry.id">
+        <select required ng-model="vm.editingEntry.project_id" ng-options="project.id as project.name for project in vm.projects" />
+          <option disabled selected value>Choose Project</option>
+        </select>
+      </td>
+      <td ng-show="vm.editingEntry.id === entry.id">
+        <input required 
+          ng-model="vm.editingEntry.entry_date" 
+          ng-focus="vm.editDateType = 'date'" 
+          ng-blur="vm.editDateType = 'text'" 
+          type="{{vm.editDateType}}" 
+          value="vm.editingEntry.entry_date"
+          placeholder="Date" />
+      </td>
+      <td ng-show="vm.editingEntry.id === entry.id">
+        <input ng-model="vm.editingEntry.hours" type="number" min="0" step="0.25">
+      </td>
       <td ng-show="vm.editingEntry.id === entry.id">
         <span class="confirm" ng-click="vm.updateEntry(entry.id)">✔</span>
         <span class="undo" ng-click="vm.updateEntry(null)">◀</span>
