@@ -73,10 +73,12 @@ app.controller('EntriesController', ['$http', function ($http) {
   }
 
   vm.updateEntry = function(id) {
-    console.log('update entry '+id);
+    if (id) {
+      console.log('update entry '+id);
+    } else {
+      vm.editingEntry = {};
+    }
   }
-
-
 
   vm.getEntries(); // get all entries on controller load
   vm.getProjects(); // get all projects on controller load

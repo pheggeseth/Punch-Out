@@ -27,7 +27,7 @@ app.controller('ProjectsController', ['$http', function($http) {
     $http.post('/projects', vm.newProject)
       .then(function(response) {
         console.log('/projects POST success:', response);
-        vm.projects.push(Object.assign({}, vm.newProject));
+        vm.getProjects();
         vm.newProject.name = '';
       }).catch(function(error) {
         console.log('/projects POST error:', error);
