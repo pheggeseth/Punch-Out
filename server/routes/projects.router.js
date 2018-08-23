@@ -15,7 +15,7 @@ router.get('/', (req, res) => {
     FROM "projects" 
     LEFT JOIN "entries" ON "projects"."id" = "entries"."project_id" 
     GROUP BY "projects"."id" 
-    ORDER BY "projects"."id";`;
+    ORDER BY "projects"."id" ASC;`;
     
   pool.query(queryText)
     .then(results => res.send(results.rows))
@@ -40,20 +40,26 @@ router.post('/', (req, res) => {
   });
 });
 
+// this put is generalized, where any project properties supplied in the query
+// will be updated to new values. For now, there is only "name".
 router.put('/:id', (req, res) => {
-  // POSTGRESQL SAMPLE PUT
-  //  const updatedShoe = req.body;
-  //  const queryText = `UPDATE "shoes" 
-  //                     SET "name" = $1, "cost" = $2, "size" = $3
-  //                     WHERE "id" = $4;`;
-  //  pool.query(queryText, [updatedShoe.name,
-  //                         updatedShoe.cost, 
-  //                         updatedShoe.size, 
-  //                         updatedShoe.id]).then( (result) => {
-  //                             res.sendStatus(200);
-  //                         }).catch( (error) => {
-  //                             res.sendStatus(500);
-  //                         });
+  const projectId = req.params.id;
+  const propsToUpdate = req.query;
+  console.log(`/projects/${projectId} PUT hit:`, propsToUpdate);
+  
+  let queryText = `UPDATE "projects" SET `;
+  const querySets = Object.entries(propsToUpdate).map((entry, index) => `"${entry[0]}" = $${index+2}`);
+  queryText = queryText + querySets.join(', ') + ` WHERE "id" = $1;`;
+  console.log('query text: '+queryText);
+
+  pool.query(queryText, [projectId, ...Object.values(propsToUpdate)])
+    .then(result => {
+      console.log(`/projects/${projectId} PUT success:`, result);
+      res.sendStatus(200);
+    }).catch(error => {
+      console.log(`/projects/${projectId} PUT error:`, error);
+      res.sendStatus(500);
+    });
 });
 
 router.delete('/:id', (req, res) => {
