@@ -43,6 +43,7 @@ td.delete {
   background-color: lightpink;
 }
 td.delete:hover {
+  cursor: pointer;
   filter: brightness(0.9);
 }
 button.delete-entry {
