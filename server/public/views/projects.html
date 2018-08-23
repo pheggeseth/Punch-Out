@@ -1,1 +1,21 @@
 {{vm.message}}
+<h2>Add Project</h2>
+<form id="add-project-form" ng-submit="vm.addProject()">
+  <input ng-model="vm.newProject.name" type="text" />
+  <button type="submit">Submit</button>
+</form>
+<h2>Projects</h2>
+<table>
+  <thead>
+    <th>Project</th>
+    <th width="15%">Total Hours</th>
+    <th width="5%"></th>
+  </thead>
+  <tbody>
+    <tr height="30px" ng-repeat="project in vm.projects">
+      <td>{{project.name}}</td>
+      <td>{{project.hours}}</td>
+      <td class="delete" ng-click="vm.deleteProject(project.id)">X</td>
+    </tr>
+  </tbody>
+</table>

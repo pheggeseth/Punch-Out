@@ -1,5 +1,5 @@
 <h2>Add Entry</h2>
-<form class="entry-form" ng-submit="vm.addEntry()">
+<form id="add-entry-form" ng-submit="vm.addEntry()">
   <input required ng-model="vm.newEntry.text" class="entry-form-text" name="entry-form-text" type="text" placeholder="What did you do?" />
   <select required ng-model="vm.newEntry.project_id" ng-options="project.id as project.name for project in vm.projects" />
     <option disabled selected value>Choose Project</option>
@@ -29,11 +29,11 @@
 <h2>History</h2>
 <table>
   <thead>
-    <th width="40%">Entry</th>
-    <th>Project</th>
+    <th>Entry</th>
+    <th width="30%">Project</th>
     <th width="10%">Date</th>
     <th width="10%">Hours</th>
-    <th width="10%">Actions</th>
+    <th width="5%"></th>
   </thead>
   <tbody>
     <tr height="30px" ng-repeat="entry in vm.entries">

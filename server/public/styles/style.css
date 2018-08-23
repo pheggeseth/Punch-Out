@@ -22,19 +22,19 @@ table {
 table, th, td {
   border: 1px solid;
 }
-.entry-form {
+#add-entry-form {
   /* width: 100%; */
   display: grid;
   grid-template-rows: repeat(2, 30px);
-  grid-template-columns: 3fr 1.5fr 1.5fr 1.5fr 1fr;
+  grid-template-columns: 1fr 125px 100px 100px 75px;
   grid-gap: 15px;
   justify-content: center;
   align-items: center;
 }
-.entry-form > input, .entry-form > select, .entry-form > button {
+form > input, form > select, form > button {
   height: 100%;
 }
-.entry-form-text {
+input.entry-form-text {
   grid-column: 1 / span 5;
 }
 td.delete {
@@ -48,4 +48,13 @@ td.delete:hover {
 button.delete-entry {
   height: 100%;
   width: 100%;
+}
+#add-project-form {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 1fr 100px;
+  grid-template-rows: 30px;
+  grid-gap: 15px;
+  justify-content: center;
+  align-items: center;
 }
