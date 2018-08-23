@@ -26,17 +26,21 @@ app.controller('EntriesController', ['$http', function ($http) {
     }
   ];
 
-  vm.projects = [{
-    id: 1,
-    name: 'My Project'
-  }];
+  vm.projects = [];
   vm.getEntries = function () {
-    $http.get('/entries')
-      .then(function (response) {
+    $http.get('/entries').then(function (response) {
         console.log('/entries GET success:', response.data);
         vm.entries = response.data;
         // date from server is formatted as 'MM/DD/YY',
         // entries also include the 'project_name' as well as the difference between 'start_time' and 'end_time' in 'hours'
+      }).catch(function (error) {
+        console.log('/entries GET error:', error);
+      });
+  };
+  vm.getProjects = function() {
+    $http.get('/projects').then(function(response) {
+        console.log('/projects GET success:', response.data);
+        vm.projects = response.data;
       }).catch(function (error) {
         console.log('/entries GET error:', error);
       });
@@ -50,4 +54,5 @@ app.controller('EntriesController', ['$http', function ($http) {
   };
 
   vm.getEntries(); // get all entries on controller load
+  vm.getProjects(); // get all projects on controller load
 }]);
