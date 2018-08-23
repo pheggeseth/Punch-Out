@@ -57,16 +57,17 @@ router.put('/:id', (req, res) => {
 });
 
 router.delete('/:id', (req, res) => {
-  // POSTGRESQL SAMPLE DELETE
-  // const idOfShoeToDelete = req.params.id;
-  //   console.log('deleting ', idOfShoeToDelete);
-  //   const queryText = 'DELETE FROM "shoes" WHERE "id" = $1;';
-  //   pool.query(queryText, [idOfShoeToDelete]).then((result) => {
-  //       res.sendStatus(200);
-  //   }).catch( (error) => {
-  //       console.log('Error in delete', error);
-  //       res.sendStatus(500);
-  //   });
+  const entryId = req.params.id;
+  console.log(`/entries/${entryId} DELETE hit`);
+
+  const queryText = 'DELETE FROM "entries" WHERE "id" = $1;';
+  pool.query(queryText, [entryId]).then(result => {
+    console.log(`/entries/${entryId} DELETE success:`, result);
+    res.sendStatus(200);
+  }).catch(error => {
+    console.log(`/entries/${entryId} DELETE error:`, error);
+    res.sendStatus(500);
+  });
 });
 
 module.exports = router;

@@ -56,6 +56,13 @@ app.controller('EntriesController', ['$http', function ($http) {
   };
   vm.deleteEntry = function (id) {
     console.log('delete entry:', id);
+    const route = '/entries/' + id;
+    $http.delete(route).then(function(response) {
+      console.log(route + ' DELETE success:', response);
+      vm.getEntries();
+    }).catch(function(error) {
+      console.log(route + ' DELETE error:', error);
+    });
   };
 
   vm.getEntries(); // get all entries on controller load
