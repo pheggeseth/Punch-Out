@@ -14,6 +14,18 @@ app.controller('ProjectsController', ['$http', function($http) {
       hours: 4
     }
   ];
+
+  vm.getProjects = function() {
+    $http.get('/projects')
+      .then(function(response) {
+        console.log('/projects GET success:', response.data);
+        vm.projects = response.data;
+      })
+      .catch(function(error) {
+        console.log('/projects GET error:', error);
+        
+      })
+  };
   vm.addProject = function() {
     console.log('add project:', vm.newProject);
     
@@ -23,4 +35,6 @@ app.controller('ProjectsController', ['$http', function($http) {
     console.log('delete project:', id);
     
   };
+
+  vm.getProjects();
 }]);

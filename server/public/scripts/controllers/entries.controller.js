@@ -33,7 +33,7 @@ app.controller('EntriesController', ['$http', function ($http) {
   vm.getEntries = function () {
     $http.get('/entries')
       .then(function (response) {
-        console.log('/entries GET success:', response);
+        console.log('/entries GET success:', response.data);
         vm.entries = response.data;
         // date from server is formatted as 'MM/DD/YY',
         // entries also include the 'project_name' as well as the difference between 'start_time' and 'end_time' in 'hours'

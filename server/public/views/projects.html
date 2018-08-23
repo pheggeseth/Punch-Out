@@ -14,7 +14,7 @@
   <tbody>
     <tr height="30px" ng-repeat="project in vm.projects">
       <td>{{project.name}}</td>
-      <td>{{project.hours}}</td>
+      <td>{{project.total_hours}}</td>
       <td class="delete" ng-click="vm.deleteProject(project.id)">X</td>
     </tr>
   </tbody>
