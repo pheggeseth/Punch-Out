@@ -5,9 +5,9 @@ app.controller('EntriesController', ['$http', function($http) {
   vm.newEntry = {
     text: '',
     project_id: null,
-    date: '',
-    start: '',
-    end: ''
+    entry_date: '',
+    start_time: '',
+    end_time: ''
   };
 
   vm.projects = [

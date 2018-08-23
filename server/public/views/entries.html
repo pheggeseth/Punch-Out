@@ -1,12 +1,29 @@
 <h2>Add Entry</h2>
 <form class="entry-form" ng-submit="vm.addEntry()">
-  <input required ng-model="vm.newEntry.text" type="text" class="entry-form-text" placeholder="What did you do?" />
+  <input required ng-model="vm.newEntry.text" class="entry-form-text" name="entry-form-text" type="text" placeholder="What did you do?" />
   <select required ng-model="vm.newEntry.project_id" ng-options="project.id as project.name for project in vm.projects" />
-    <!-- <option disabled selected value>Project</option> -->
+    <option disabled selected value>Choose Project</option>
   </select>
-  <input required ng-model="vm.newEntry.entry_date" type="date" required />
-  <input required ng-model="vm.newEntry.start_time" type="time" step="900" />
-  <input required ng-model="vm.newEntry.end_time" type="time" step="900" />
+  <input required 
+    ng-model="vm.newEntry.entry_date" 
+    ng-focus="vm.dateType = 'date'" 
+    ng-blur="vm.dateType = 'text'" 
+    type="{{vm.dateType}}" 
+    placeholder="Date" />
+  <input required 
+    ng-model="vm.newEntry.start_time" 
+    ng-focus="vm.startTimeType = 'time'" 
+    ng-blur="vm.startTimeType = 'text'" 
+    type="{{vm.startTimeType}}" 
+    step="900" 
+    placeholder="Start Time"/>
+  <input required 
+    ng-model="vm.newEntry.end_time" 
+    ng-focus="vm.endTimeType = 'time'" 
+    ng-blur="vm.endTimeType = 'text'" 
+    type="{{vm.endTimeType}}" 
+    step="900" 
+    placeholder="End Time"/>
   <button type="submit">Submit</button>
 </form>
 <h2>History</h2>
@@ -24,7 +41,7 @@
       <td>{{entry.project}}</td>
       <td>{{entry.date}}</td>
       <td>{{entry.hours}}</td>
-      <td><md-button ng-click="vm.deleteEntry(entry.id)">Delete</md-button></td>
+      <td><button ng-click="vm.deleteEntry(entry.id)">Delete</button></td>
     </tr>
   </tbody>
 </table>
