@@ -34,9 +34,12 @@ SELECT "entries".*,
 	DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60 AS "hours" 
 	FROM "entries" JOIN "projects" ON "entries"."project_id" = "projects"."id";
 
--- get all projects, including the "total_hours" from all entries for that project
+-- get all projects, including the "total_hours" from all entries for that project (0 if null)
 SELECT "projects".*, 
-	SUM(DATE_PART('hour', "entries"."end_time"::time - "entries"."start_time"::time) + 
-		DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60) 
-		AS "total_hours" 
-	FROM "projects" JOIN "entries" ON "projects"."id" = "entries"."project_id" GROUP BY "projects"."id" ORDER BY "projects"."id";
+	COALESCE(
+		SUM(
+			DATE_PART('hour', "entries"."end_time"::time - "entries"."start_time"::time) + 
+			DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60
+		)
+	, 0) AS "total_hours" 
+	FROM "projects" LEFT JOIN "entries" ON "projects"."id" = "entries"."project_id" GROUP BY "projects"."id" ORDER BY "projects"."id";
