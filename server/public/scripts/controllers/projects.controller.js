@@ -23,9 +23,19 @@ app.controller('ProjectsController', ['$http', function($http) {
         console.log('/projects POST success:', response);
         vm.projects.push(Object.assign({}, vm.newProject));
         vm.newProject.name = '';
-      })
-      .catch(function(error) {
+      }).catch(function(error) {
         console.log('/projects POST error:', error);
+      });
+  };
+
+  vm.updateProject = function(project) {
+    $http.put(`/projects/${project.id}`, project)
+      .then(function(response) {
+        console.log(`/projects/${project.id} PUT success:`, response);
+        vm.editingId = null;
+        // vm.getProjects();
+      }).catch(function(error) {
+        console.log(`/projects/${project.id} PUT error:`, error);
       });
   };
 
