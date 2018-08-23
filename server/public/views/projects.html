@@ -15,7 +15,11 @@
     <tr height="30px" ng-repeat="project in vm.projects">
       <td ng-dblclick="vm.editingId = project.id" ng-hide="project.id === vm.editingId">{{project.name}}</td>
       <td ng-show="project.id === vm.editingId">
-        <input ng-model="project.name" type="text" /><button ng-click="vm.updateProject(project)">Confirm</button>
+        <form ng-submit="vm.updateProject(project)">
+          <input ng-model="project.name" type="text" />
+          <button type="submit">Save</button>
+        </form>
+        
       </td>
       <td>{{project.total_hours}}</td>
       <td class="delete" ng-click="vm.deleteProject(project.id)">X</td>
