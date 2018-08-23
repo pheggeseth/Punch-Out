@@ -48,11 +48,11 @@
     <th width="5%"></th>
   </thead>
   <tbody>
-    <tr ng-dblclick="vm.editEntry($index)" height="30px" ng-repeat="entry in vm.entries | orderBy:vm.sort.column:vm.sort.reverse">
-      <td ng-hide="vm.editingEntry.id === entry.id">{{entry.text}}</td>
-      <td ng-hide="vm.editingEntry.id === entry.id">{{entry.project_name}}</td>
-      <td ng-hide="vm.editingEntry.id === entry.id">{{entry.entry_date | date:'M/d/yy'}}</td>
-      <td ng-hide="vm.editingEntry.id === entry.id">{{entry.hours}}</td>
+    <tr height="30px" ng-repeat="entry in vm.entries | orderBy:vm.sort.column:vm.sort.reverse">
+      <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.text}}</td>
+      <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.project_name}}</td>
+      <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.entry_date | date:'M/d/yy'}}</td>
+      <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.hours}}</td>
       <td class="delete" ng-click="vm.deleteEntry(entry.id)" ng-hide="vm.editingEntry.id === entry.id">X</td>
       <td ng-show="vm.editingEntry.id === entry.id">
         <input ng-model="vm.editingEntry.text" type="text">
