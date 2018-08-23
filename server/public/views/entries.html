@@ -48,12 +48,16 @@
     <th width="5%"></th>
   </thead>
   <tbody>
-    <tr height="30px" ng-repeat="entry in vm.entries | orderBy:vm.sort.column:vm.sort.reverse">
+    <tr ng-dblclick="vm.editEntry($index)" height="30px" ng-repeat="entry in vm.entries | orderBy:vm.sort.column:vm.sort.reverse">
       <td>{{entry.text}}</td>
       <td>{{entry.project_name}}</td>
       <td>{{entry.entry_date}}</td>
       <td>{{entry.hours}}</td>
-      <td class="delete" ng-click="vm.deleteEntry(entry.id)">X</td>
+      <td class="delete" ng-click="vm.deleteEntry(entry.id)" ng-hide="vm.editingEntry.id === entry.id">X</td>
+      <td ng-show="vm.editingEntry.id === entry.id">
+        <span class="confirm" ng-click="vm.updateEntry(entry.id)">✔</span>
+        <span class="undo" ng-click="vm.updateEntry(null)">◀</span>
+      </td>
     </tr>
   </tbody>
 </table>

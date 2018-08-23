@@ -14,6 +14,7 @@ app.controller('EntriesController', ['$http', function ($http) {
     column: '',
     reverse: null
   };
+  vm.editingEntry = {};
 
   vm.projects = [];
   vm.getEntries = function () {
@@ -62,6 +63,10 @@ app.controller('EntriesController', ['$http', function ($http) {
     }
     vm.sort.column = property;
   };
+
+  vm.editEntry = function(index) {
+    vm.editingEntry = Object.assign({}, vm.entries[index]);
+  }
 
   vm.getEntries(); // get all entries on controller load
   vm.getProjects(); // get all projects on controller load
