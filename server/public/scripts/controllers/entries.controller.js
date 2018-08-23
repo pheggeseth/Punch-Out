@@ -47,7 +47,12 @@ app.controller('EntriesController', ['$http', function ($http) {
   };
   vm.addEntry = function () {
     console.log('add new entry:', vm.newEntry);
-
+    $http.post('/entries', vm.newEntry).then(function(response) {
+      console.log('/entries POST success:', response);
+      vm.entries.push(Object.assign({}, vm.newEntry));
+    }).catch(function(error) {
+      console.log('/entries POST error:', error);
+    });
   };
   vm.deleteEntry = function (id) {
     console.log('delete entry:', id);
