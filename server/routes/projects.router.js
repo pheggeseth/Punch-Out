@@ -4,7 +4,7 @@ const pool = require('../modules/pool');
 
 // get route params with "/route/:paramName, then reference it as req.params.paramName"
 router.get('/', (req, res) => {
-  // POSTGRESQL SAMPLE GET
+  console.log('/projects GET hit');
   const queryText = `SELECT "projects".*, 
 	SUM(DATE_PART('hour', "entries"."end_time"::time - "entries"."start_time"::time) + 
 		DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60) 
@@ -19,7 +19,9 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  // POSTGRESQL SAMPLE POST
+  const newProject = req.body;
+  console.log('/projects POST hit:', newProject);
+  res.sendStatus(201);
   // const itemToAdd = req.body; // This the data we sent
   //   console.log('In POST route - product:', itemToAdd); // Has a name, size and cost
   //   const query = 'INSERT INTO "table" ("column1", "column2", "column3") VALUES ($1, $2, $3);';

@@ -24,11 +24,17 @@ app.controller('ProjectsController', ['$http', function($http) {
       .catch(function(error) {
         console.log('/projects GET error:', error);
         
-      })
+      });
   };
   vm.addProject = function() {
     console.log('add project:', vm.newProject);
-    
+    $http.post('/projects', vm.newProject)
+      .then(function(response) {
+        console.log('/projects POST success:', response);
+      })
+      .catch(function(error) {
+        console.log('/projects POST error:', error);
+      });
   };
 
   vm.deleteProject = function(id) {
