@@ -40,19 +40,13 @@ router.post('/', (req, res) => {
   });
 });
 
-// this put is generalized, where any project properties supplied in the query
-// will be updated to new values. For now, there is only "name".
 router.put('/:id', (req, res) => {
   const projectId = req.params.id;
   const propsToUpdate = req.body;
   console.log(`/projects/${projectId} PUT hit:`, propsToUpdate);
   
-  // let queryText = `UPDATE "projects" SET `;
-  // const querySets = Object.entries(propsToUpdate).map((entry, index) => `"${entry[0]}" = $${index+2}`);
-  // queryText = queryText + querySets.join(', ') + ` WHERE "id" = $1;`;
-  // console.log('query text: '+queryText);
   const queryText = `UPDATE "projects" SET "name" = $2 WHERE "id" = $1;`;
-  // pool.query(queryText, [projectId, ...Object.values(propsToUpdate)])
+  
   pool.query(queryText, [projectId, propsToUpdate.name])
     .then(result => {
       console.log(`/projects/${projectId} PUT success:`, result);
