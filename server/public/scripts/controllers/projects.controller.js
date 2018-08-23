@@ -3,6 +3,7 @@ app.controller('ProjectsController', ['$http', function($http) {
   // vm.message = 'Hello from ProjectsController';
 
   vm.projects = [];
+  vm.editingProject = {};
 
   vm.getProjects = function() {
     $http.get('/projects')
@@ -16,6 +17,7 @@ app.controller('ProjectsController', ['$http', function($http) {
         
       });
   };
+
   vm.addProject = function() {
     console.log('add project:', vm.newProject);
     $http.post('/projects', vm.newProject)
@@ -28,15 +30,22 @@ app.controller('ProjectsController', ['$http', function($http) {
       });
   };
 
-  vm.updateProject = function(project) {
-    $http.put(`/projects/${project.id}`, project)
+  vm.editProject = function(index) {
+    vm.editingProject = Object.assign({}, vm.projects[index]);
+  }
+
+  vm.updateProject = function(index) {
+    if (vm.editingProject.name !== undefined) {
+      $http.put(`/projects/${vm.editingProject.id}`, vm.editingProject)
       .then(function(response) {
-        console.log(`/projects/${project.id} PUT success:`, response);
-        vm.editingId = null;
+        console.log(`/projects/${vm.editingProject.id} PUT success:`, response);
+        vm.projects[index] = vm.editingProject;
+        vm.editingProject = {};
         // vm.getProjects();
       }).catch(function(error) {
-        console.log(`/projects/${project.id} PUT error:`, error);
+        console.log(`/projects/${vm.editingProject.id} PUT error:`, error);
       });
+    }
   };
 
   vm.deleteProject = function(id) {

@@ -13,11 +13,12 @@
   </thead>
   <tbody>
     <tr height="30px" ng-repeat="project in vm.projects">
-      <td ng-dblclick="vm.editingId = project.id" ng-hide="project.id === vm.editingId">{{project.name}}</td>
-      <td ng-show="project.id === vm.editingId">
-        <form ng-submit="vm.updateProject(project)">
-          <input ng-model="project.name" type="text" />
+      <td ng-dblclick="vm.editProject($index)" ng-hide="project.id === vm.editingProject.id">{{project.name}}</td>
+      <td ng-show="project.id === vm.editingProject.id">
+        <form class="edit-project-name" ng-submit="vm.updateProject($index)">
+          <input ng-model="vm.editingProject.name" type="text" />
           <button type="submit">Save</button>
+          <button ng-click="vm.editingProject = {}">Cancel</button>
         </form>
         
       </td>

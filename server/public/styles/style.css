@@ -58,3 +58,6 @@ button.delete-entry {
   justify-content: center;
   align-items: center;
 }
+form.edit-project-name {
+  user-select: none;
+}
