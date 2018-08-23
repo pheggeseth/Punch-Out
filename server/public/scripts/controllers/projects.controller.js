@@ -4,6 +4,10 @@ app.controller('ProjectsController', ['$http', function($http) {
 
   vm.projects = [];
   vm.editingProject = {};
+  vm.sort = {
+    column: '',
+    reverse: null
+  };
 
   vm.getProjects = function() {
     $http.get('/projects')
@@ -68,6 +72,15 @@ app.controller('ProjectsController', ['$http', function($http) {
     }).catch(function(error) {
       console.log(`Error deleting entries for project id ${id}. Could not delete project:`, error);
     });
+  };
+
+  vm.sortProjects = function(property) {
+    if (vm.sort.reverse === null || vm.sort.column !== property) {
+      vm.sort.reverse = false;
+    } else {
+      vm.sort.reverse = !vm.sort.reverse;
+    }
+    vm.sort.column = property;
   };
 
   vm.getProjects();
