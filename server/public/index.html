@@ -19,14 +19,27 @@
   <!-- Client JS -->
   <script src="./scripts/client.js"></script>
   <script src="./scripts/controllers/entries.controller.js"></script>
+  <script src="./scripts/controllers/projects.controller.js"></script>
+  <script src="./scripts/controllers/reports.controller.js"></script>
 
   <!-- Client CSS -->
   <link rel="stylesheet" type="text/css" media="screen" href="./styles/style.css" />
 </head>
 <body ng-app="punchout">
   <div class="container" layout="column" layout-align="center start">
-      Hello world. 
-      <ng-view></ng-view>
+    <h1>Punch Out</h1>
+    <md-nav-bar aria-label="navbar">
+      <md-nav-item md-nav-href="#!/entries" aria-label="Add Entry">
+        Add Entry
+      </md-nav-item>
+      <md-nav-item md-nav-href="#!/projects" aria-label="Manage Projects">
+        Manage Projects
+      </md-nav-item>
+      <md-nav-item md-nav-href="#!/reports" aria-label="Reports">
+        Reports
+      </md-nav-item>
+    </md-nav-bar>
+    <ng-view></ng-view>
   </div>
 </body>
 </html>
