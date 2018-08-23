@@ -63,9 +63,23 @@ router.delete('/:id', (req, res) => {
   const queryText = 'DELETE FROM "entries" WHERE "id" = $1;';
   pool.query(queryText, [entryId]).then(result => {
     console.log(`/entries/${entryId} DELETE success:`, result);
-    res.sendStatus(200);
+    res.sendStatus(202);
   }).catch(error => {
     console.log(`/entries/${entryId} DELETE error:`, error);
+    res.sendStatus(500);
+  });
+});
+
+router.delete('/project/:id', (req, res) => {
+  const projectId = req.params.id;
+  console.log(`/entries/project/${projectId} DELETE hit`);
+  
+  const queryText = `DELETE FROM "entries" WHERE "project_id" = $1`;
+  pool.query(queryText, [projectId]).then(result => {
+    console.log(`/entries/project/${projectId} DELETE success:`, result);
+    res.sendStatus(202);
+  }).catch(error => {
+    console.log(`/entries/project/${projectId} DELETE error:`, error);
     res.sendStatus(500);
   });
 });

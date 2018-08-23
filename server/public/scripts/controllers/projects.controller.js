@@ -31,12 +31,23 @@ app.controller('ProjectsController', ['$http', function($http) {
 
   vm.deleteProject = function(id) {
     console.log('delete project:', id);
-    const route = '/projects/' + id;
-    $http.delete(route).then(function(response) {
-      console.log(route + ' DELETE success:', response);
-      vm.getProjects();
+  
+    // delete all entries for this project first
+    const entriesRoute = '/entries/project/'+id;
+    $http.delete(entriesRoute).then(function(response) {
+      console.log(`Deleted all entries for project id: ${id}. Deleting project.`);
+      
+      // if entries delete is successful, delete the project
+      const projectRoute = '/projects/' + id;
+      $http.delete(projectRoute).then(function(response) {
+        console.log(projectRoute + ' DELETE success:', response);
+        vm.getProjects();
+      }).catch(function(error) {
+        console.log(projectRoute + ' DELETE error:', error);
+      });
+
     }).catch(function(error) {
-      console.log(route + ' DELETE error:', error);
+      console.log(`Error deleting entries for project id ${id}. Could not delete project:`, error);
     });
   };
 
