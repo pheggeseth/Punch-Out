@@ -1,7 +1,7 @@
-app.controller('EntriesController', ['$http', function($http) {
+app.controller('EntriesController', ['$http', function ($http) {
   const vm = this;
   // vm.hello = "Hello from EntriesController";
-  
+
   vm.newEntry = {
     text: '',
     project_id: null,
@@ -10,8 +10,7 @@ app.controller('EntriesController', ['$http', function($http) {
     end_time: ''
   };
 
-  vm.entries = [
-    {
+  vm.entries = [{
       id: 1,
       text: 'first entry',
       project: 'project 1',
@@ -27,33 +26,28 @@ app.controller('EntriesController', ['$http', function($http) {
     }
   ];
 
-  vm.projects = [
-    {
-      id: 1,
-      name: 'My Project'
-    }
-  ];
-  vm.getEntries = function() {
+  vm.projects = [{
+    id: 1,
+    name: 'My Project'
+  }];
+  vm.getEntries = function () {
     $http.get('/entries')
-      .then(function(response) {
+      .then(function (response) {
         console.log('/entries GET success:', response);
-        vm.entries = response.data.map(addEntryHours);
-      }).catch(function(error) {
+        vm.entries = response.data;
+        // date from server is formatted as 'MM/DD/YY',
+        // entries also include the 'project_name' as well as the difference between 'start_time' and 'end_time' in 'hours'
+      }).catch(function (error) {
         console.log('/entries GET error:', error);
       });
   };
-  vm.addEntry = function() {
+  vm.addEntry = function () {
     console.log('add new entry:', vm.newEntry);
-    
+
   };
-  vm.deleteEntry = function(id) {
+  vm.deleteEntry = function (id) {
     console.log('delete entry:', id);
   };
 
   vm.getEntries(); // get all entries on controller load
 }]);
-
-function addEntryHours(entry) {
-  entry.hours = 'HOURS';
-  return entry;
-}
