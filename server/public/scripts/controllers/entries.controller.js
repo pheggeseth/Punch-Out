@@ -49,7 +49,7 @@ app.controller('EntriesController', ['$http', function ($http) {
     console.log('add new entry:', vm.newEntry);
     $http.post('/entries', vm.newEntry).then(function(response) {
       console.log('/entries POST success:', response);
-      vm.entries.push(Object.assign({}, vm.newEntry));
+      vm.getEntries();
     }).catch(function(error) {
       console.log('/entries POST error:', error);
     });

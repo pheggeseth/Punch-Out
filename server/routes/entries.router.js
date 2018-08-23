@@ -9,7 +9,8 @@ router.get('/', (req, res) => {
 	"projects"."name" as "project_name", 
 	DATE_PART('hour', "entries"."end_time"::time - "entries"."start_time"::time) + 
 	DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60 AS "hours" 
-	FROM "entries" JOIN "projects" ON "entries"."project_id" = "projects"."id";`;
+  FROM "entries" JOIN "projects" ON "entries"."project_id" = "projects"."id"
+  ORDER BY "entries"."id" ASC;`;
   pool.query(queryText)
     .then(results => res.send(results.rows))
     .catch(error => {
@@ -19,16 +20,24 @@ router.get('/', (req, res) => {
 });
 
 router.post('/', (req, res) => {
-  // POSTGRESQL SAMPLE POST
-  // const itemToAdd = req.body; // This the data we sent
-  //   console.log('In POST route - product:', itemToAdd); // Has a name, size and cost
-  //   const query = 'INSERT INTO "table" ("column1", "column2", "column3") VALUES ($1, $2, $3);';
-  //   pool.query(query, [itemToAdd.value1, itemToAdd.value2, itemToAdd.value3])
-  //     .then(() => res.sendStatus(201))
-  //     .catch(error => {
-  //       console.log('Error in POST:', error);
-  //       res.sendStatus(500);
-  //   });
+  const entryToAdd = req.body; // This the data we sent
+    console.log('/entries POST hit:', entryToAdd); // Has a name, size and cost
+    
+    const queryText = `INSERT INTO "entries" 
+      ("text", "project_id", "entry_date", "start_time", "end_time") 
+      VALUES ($1, $2, $3, $4, $5);`;
+    
+    pool.query(queryText, [
+      entryToAdd.text, 
+      entryToAdd.project_id, 
+      entryToAdd.entry_date, 
+      entryToAdd.start_time, 
+      entryToAdd.end_time
+    ]).then(() => res.sendStatus(201))
+    .catch(error => {
+      console.log('Error in POST:', error);
+      res.sendStatus(500);
+    });
 });
 
 router.put('/:id', (req, res) => {
