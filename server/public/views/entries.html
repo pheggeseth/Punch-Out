@@ -45,7 +45,7 @@
         ng-click="vm.sortEntries('hours')" width="10%">
       Hours
     </th>
-    <th width="5%"></th>
+    <th width="10%">Actions</th>
   </thead>
   <tbody>
     <tr height="30px" ng-repeat="entry in vm.entries | orderBy:vm.sort.column:vm.sort.reverse">
@@ -63,26 +63,14 @@
         </select>
       </td>
       <td ng-show="vm.editingEntry.id === entry.id">
-        <!-- <input required 
-          ng-model="vm.editingEntry.entry_date" 
-          ng-focus="vm.editDateType = 'date'" 
-          ng-blur="vm.editDateType = 'text'" 
-          type="{{vm.editDateType}}" 
-          value="vm.editingEntry.entry_date"
-          placeholder="Date" /> -->
-        <input
-          ng-model="vm.editingEntry.entry_date" 
-          
-          type="date" 
-          
-          placeholder="Date" />
+        <input ng-model="vm.editingEntry.entry_date" type="date" />
       </td>
       <td ng-show="vm.editingEntry.id === entry.id">
         <input ng-model="vm.editingEntry.hours" type="number" min="0" step="0.25">
       </td>
-      <td ng-show="vm.editingEntry.id === entry.id">
-        <span class="confirm" ng-click="vm.updateEntry(entry.id)">✔</span>
-        <span class="undo" ng-click="vm.updateEntry(null)">◀</span>
+      <td class="edit-actions" ng-show="vm.editingEntry.id === entry.id">
+          <div class="confirm" ng-click="vm.updateEntry(entry.id)">✔</div>
+          <div class="undo" ng-click="vm.updateEntry(null)">◀</div>
       </td>
     </tr>
   </tbody>

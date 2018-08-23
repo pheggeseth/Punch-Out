@@ -72,6 +72,12 @@ app.controller('EntriesController', ['$http', function ($http) {
     vm.editingEntry = Object.assign({}, vm.entries[index]);
   }
 
+  vm.updateEntry = function(id) {
+    console.log('update entry '+id);
+  }
+
+
+
   vm.getEntries(); // get all entries on controller load
   vm.getProjects(); // get all projects on controller load
 }]);
