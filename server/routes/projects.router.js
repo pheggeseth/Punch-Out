@@ -7,13 +7,13 @@ router.get('/', (req, res) => {
   console.log('/projects GET hit');
   const queryText = 
   `SELECT "projects".*,
-  COALESCE(
-    SUM(("entries"."end_time" - "entries"."start_time") / 1000 / 60 / 60)
-  , 0) 
-  AS "total_hours"
-  FROM "projects" 
-  LEFT JOIN "entries" ON "projects"."id" = "entries"."project_id" 
-  GROUP BY "projects"."id" ORDER BY "projects"."id";`;
+	COALESCE(
+		SUM(("entries"."end_time" - "entries"."start_time")::float / 1000 / 60 / 60)
+	, 0)
+	AS "total_hours"
+	FROM "projects" 
+	LEFT JOIN "entries" ON "projects"."id" = "entries"."project_id" 
+	GROUP BY "projects"."id" ORDER BY "projects"."id";`;
     
   pool.query(queryText)
     .then(results => res.send(results.rows))
