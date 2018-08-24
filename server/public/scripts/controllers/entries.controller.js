@@ -22,18 +22,7 @@ app.controller('EntriesController', ['$http', function ($http) {
     $http.get('/entries').then(function (response) {
         console.log('/entries GET success:', response.data);
         // entries include the 'project_name' as a string as well as the 'project_id'
-        vm.entries = response.data.map(entry => {
-          entry.entry_date = new Date(+entry.entry_date);
-          entry.start_time = new Date(+entry.start_time);
-          entry.end_time = new Date(+entry.end_time);
-          Object.defineProperty(entry, 'hours', {
-            get: function() {
-              return (this.end_time.getTime() - this.start_time.getTime()) / HOUR;
-            }
-          });
-          
-          return entry;
-        });
+        vm.entries = response.data.map(sanitizeEntriesFromDB);
       }).catch(function (error) {
         console.log('/entries GET error:', error);
       });
@@ -47,8 +36,13 @@ app.controller('EntriesController', ['$http', function ($http) {
       });
   };
   vm.addEntry = function () {
+    if(anyEmptyValues(vm.newEntry)) {
+      showMessage('must complete all fields');
+      return;
+    }
     console.log('add new entry:', vm.newEntry);
-    $http.post('/entries', vm.newEntry).then(function(response) {
+    $http.post('/entries', sanitizeEntryForDB(vm.newEntry))
+    .then(function(response) {
       console.log('/entries POST success:', response);
       vm.getEntries();
     }).catch(function(error) {
@@ -58,7 +52,8 @@ app.controller('EntriesController', ['$http', function ($http) {
   vm.deleteEntry = function (id) {
     console.log('delete entry:', id);
     const route = '/entries/' + id;
-    $http.delete(route).then(function(response) {
+    $http.delete(route)
+    .then(function(response) {
       console.log(route + ' DELETE success:', response);
       vm.getEntries();
     }).catch(function(error) {
@@ -81,24 +76,54 @@ app.controller('EntriesController', ['$http', function ($http) {
 
   vm.updateEntry = function(id) {
     if (id) {
+      if(anyEmptyValues(vm.editingEntry)) {
+        showMessage('must complete all fields');
+        return;
+      }
       console.log('update entry '+id);
-      // copy object to send
-      const entryToSend = Object.assign({}, vm.editingEntry);
-      // change date/time properties back to unix epoch numbers for storing in server
-      entryToSend.entry_date = entryToSend.entry_date.getTime();
-      entryToSend.start_time = entryToSend.start_time.getTime();
-      entryToSend.end_time = entryToSend.end_time.getTime();
-      $http.put('/entries/' + id, entryToSend)
-        .then(function(response) {
-          console.log(`/entries/${id} PUT success:`, response);
-          vm.getEntries();
-          vm.editingEntry = {};
-        }).catch(function(error) {
-          console.log(`/entries/${id} PUT error:`, error);
-        });
+      $http.put('/entries/' + id, sanitizeEntryForDB(vm.editingEntry))
+      .then(function(response) {
+        console.log(`/entries/${id} PUT success:`, response);
+        vm.editingEntry = {};
+        vm.getEntries();
+      }).catch(function(error) {
+        console.log(`/entries/${id} PUT error:`, error);
+      });
     } else {
       vm.editingEntry = {};
     }
+  }
+
+  function anyEmptyValues(object) {
+    return Object.values(object).some(value => !value);
+  }
+
+  function showMessage(message) {
+    console.log(message);
+  }
+
+  function sanitizeEntriesFromDB(entry) {
+    // convert epoch time strings to date objects
+    entry.entry_date = new Date(+entry.entry_date);
+    entry.start_time = new Date(+entry.start_time);
+    entry.end_time = new Date(+entry.end_time);
+    // add entry 'hours' getter, which computes the difference
+    // between end_time and start_time in hours
+    Object.defineProperty(entry, 'hours', {
+      get: function() {
+        return (this.end_time.getTime() - this.start_time.getTime()) / HOUR;
+      }
+    });
+    return entry;
+  }
+
+  function sanitizeEntryForDB(entry) {
+    let sanitized = Object.assign({}, entry);
+    // convert dates back to unix epoch numbers for storing in db
+    sanitized.entry_date = sanitized.entry_date.getTime();
+    sanitized.start_time = sanitized.start_time.getTime();
+    sanitized.end_time = sanitized.end_time.getTime();
+    return sanitized;
   }
 
   vm.getEntries(); // get all entries on controller load

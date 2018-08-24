@@ -1,29 +1,12 @@
 <h2>Add Entry</h2>
 <form id="add-entry-form" ng-submit="vm.addEntry()">
-  <input required ng-model="vm.newEntry.text" class="entry-form-text" name="entry-form-text" type="text" placeholder="What did you do?" />
-  <select required ng-model="vm.newEntry.project_id" ng-options="project.id as project.name for project in vm.projects" />
+  <input ng-model="vm.newEntry.text" class="entry-form-text" name="entry-form-text" type="text" placeholder="What did you do?" />
+  <select ng-model="vm.newEntry.project_id" ng-options="project.id as project.name for project in vm.projects" />
     <option disabled selected value>Choose Project</option>
   </select>
-  <input required 
-    ng-model="vm.newEntry.entry_date" 
-    ng-focus="vm.addDateType = 'date'" 
-    ng-blur="vm.addDateType = 'text'" 
-    type="{{vm.addDateType}}" 
-    placeholder="Date" />
-  <input required 
-    ng-model="vm.newEntry.start_time" 
-    ng-focus="vm.startTimeType = 'time'" 
-    ng-blur="vm.startTimeType = 'text'" 
-    type="{{vm.startTimeType}}" 
-    step="900" 
-    placeholder="Start Time"/>
-  <input required 
-    ng-model="vm.newEntry.end_time" 
-    ng-focus="vm.endTimeType = 'time'" 
-    ng-blur="vm.endTimeType = 'text'" 
-    type="{{vm.endTimeType}}" 
-    step="900" 
-    placeholder="End Time"/>
+  <input ng-model="vm.newEntry.entry_date" type="date" />
+  <input ng-model="vm.newEntry.start_time" type="time" step="900" />
+  <input ng-model="vm.newEntry.end_time" type="time" step="900" />
   <button type="submit">Submit</button>
 </form>
 <h2>History</h2>
@@ -63,7 +46,7 @@
         <input ng-model="vm.editingEntry.text" type="text">
       </td>
       <td ng-show="vm.editingEntry.id === entry.id">
-        <select required ng-model="vm.editingEntry.project_id" ng-options="project.id as project.name for project in vm.projects" />
+        <select ng-model="vm.editingEntry.project_id" ng-options="project.id as project.name for project in vm.projects" />
           <option disabled selected value>Choose Project</option>
         </select>
       </td>
