@@ -5,13 +5,7 @@ const pool = require('../modules/pool');
 // get route params with "/route/:paramName, then reference it as req.params.paramName"
 router.get('/', (req, res) => {
   console.log('/projects GET hit');
-  const queryText = `SELECT "projects".*, 
-    COALESCE(
-      SUM(
-        DATE_PART('hour', "entries"."end_time"::time - "entries"."start_time"::time) + 
-        DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60
-      )
-    , 0) AS "total_hours" 
+  const queryText = `SELECT "projects".* 
     FROM "projects" 
     LEFT JOIN "entries" ON "projects"."id" = "entries"."project_id" 
     GROUP BY "projects"."id" 

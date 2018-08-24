@@ -49,11 +49,16 @@
   </thead>
   <tbody>
     <tr height="30px" ng-repeat="entry in vm.entries | orderBy:vm.sort.column:vm.sort.reverse">
+      <!-- Display cells. Double clicking on any one of these causes edit fields to appear. -->
       <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.text}}</td>
       <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.project_name}}</td>
       <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.entry_date | date:'M/d/yy'}}</td>
       <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.hours}}</td>
+      <!-- Click this table cell to delete an entry. -->
       <td class="delete" ng-click="vm.deleteEntry(entry.id)" ng-hide="vm.editingEntry.id === entry.id">X</td>
+      
+      <!-- Edit fields. A shallow clone of the entry to edit is stored in vm.editingEntry, 
+      which is linked to these fields. -->
       <td ng-show="vm.editingEntry.id === entry.id">
         <input ng-model="vm.editingEntry.text" type="text">
       </td>
@@ -66,8 +71,16 @@
         <input ng-model="vm.editingEntry.entry_date" type="date" />
       </td>
       <td ng-show="vm.editingEntry.id === entry.id">
-        <input ng-model="vm.editingEntry.hours" type="number" min="0" step="0.25">
+        <input ng-model="vm.editingEntry.start_time" type="time" />
+        <input ng-model="vm.editingEntry.end_time" type="time" />
       </td>
+      <!-- <td ng-show="vm.editingEntry.id === entry.id">
+        <input ng-model="vm.editingEntry.hours" type="number" min="0" step="0.25">
+      </td> -->
+      <!-- The delete cell is replaced with a cell of the same size,
+      but with two "buttons" inside: a confirm and an undo button.
+      Confirm saves the changes to the database, while undo abandons changes 
+      and restores the display elements, showing the original table cells again. -->
       <td class="edit-actions" ng-show="vm.editingEntry.id === entry.id">
           <div class="confirm" ng-click="vm.updateEntry(entry.id)">✔</div>
           <div class="undo" ng-click="vm.updateEntry(null)">◀</div>

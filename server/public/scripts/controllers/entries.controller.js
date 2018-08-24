@@ -1,13 +1,14 @@
 app.controller('EntriesController', ['$http', function ($http) {
   const vm = this;
   // vm.hello = "Hello from EntriesController";
+  const HOUR = 1000 * 60 * 60;
 
   vm.newEntry = {
     text: '',
     project_id: null,
-    entry_date: '',
-    start_time: '',
-    end_time: ''
+    entry_date: null,
+    start_time: null,
+    end_time: null
   };
   vm.entries = [];
   vm.sort = {
@@ -20,13 +21,20 @@ app.controller('EntriesController', ['$http', function ($http) {
   vm.getEntries = function () {
     $http.get('/entries').then(function (response) {
         console.log('/entries GET success:', response.data);
-        // date from server is formatted as 'MM/DD/YY',
-        // entries also include the 'project_name' as well as the difference between 'start_time' and 'end_time' in 'hours'
-        vm.entries = response.data.map(entry => {          
-          entry.entry_date = new Date(entry.entry_date);
+        // entries include the 'project_name' as a string as well as the 'project_id'
+        vm.entries = response.data.map(entry => {
+          entry.entry_date = new Date(+entry.entry_date);
+          entry.start_time = new Date(+entry.start_time);
+          entry.end_time = new Date(+entry.end_time);
+          // entry.hours = (+entry.end_time - +entry.start_time) / HOUR;
+          Object.defineProperty(entry, 'hours', {
+            get: function() {
+              return (this.end_time.getTime() - this.start_time.getTime()) / HOUR;
+            }
+          });
+          
           return entry;
         });
-        
       }).catch(function (error) {
         console.log('/entries GET error:', error);
       });
@@ -36,7 +44,7 @@ app.controller('EntriesController', ['$http', function ($http) {
         console.log('/projects GET success:', response.data);
         vm.projects = response.data;
       }).catch(function (error) {
-        console.log('/entries GET error:', error);
+        console.log('/projects GET error:', error);
       });
   };
   vm.addEntry = function () {

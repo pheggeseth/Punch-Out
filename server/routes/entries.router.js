@@ -5,9 +5,7 @@ const pool = require('../modules/pool');
 // get route params with "/route/:paramName, then reference it as req.params.paramName"
 router.get('/', (req, res) => {
   const queryText = `SELECT "entries".*,
-	"projects"."name" as "project_name", 
-	DATE_PART('hour', "entries"."end_time"::time - "entries"."start_time"::time) + 
-	DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60 AS "hours" 
+	"projects"."name" as "project_name" 
   FROM "entries" JOIN "projects" ON "entries"."project_id" = "projects"."id"
   ORDER BY "entries"."id" ASC;`;
   pool.query(queryText)
