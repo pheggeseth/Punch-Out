@@ -1,8 +1,11 @@
 app.controller('EntriesController', ['$http', function ($http) {
   const vm = this;
   // vm.hello = "Hello from EntriesController";
-  const HOUR = 1000 * 60 * 60;
 
+  // milliseconds in an hour, used for converting unix epoch times to hours
+  const HOUR = 1000 * 60 * 60; 
+
+  // add entry form object
   vm.newEntry = {
     text: '',
     project_id: null,
@@ -10,23 +13,38 @@ app.controller('EntriesController', ['$http', function ($http) {
     start_time: null,
     end_time: null
   };
+
+  // list of projects used to attribute a new entry to a project
+  vm.projects = [];
+
+  // list of entries from the database
   vm.entries = [];
+  
+  // object for monitoring which column, if any, is sorting a table
   vm.sort = {
     column: '',
     reverse: null
   };
+
+  // object used to hold a copy of an entry while editing it
   vm.editingEntry = {};
 
-  vm.projects = [];
+  // get all entries from database, along with the entry 'project_name' from the projects table
   vm.getEntries = function () {
     $http.get('/entries').then(function (response) {
         console.log('/entries GET success:', response.data);
-        // entries include the 'project_name' as a string as well as the 'project_id'
+        
+        // the database returns dates as unix epoch date numbers
+        // so we need to map all entries through a function
+        // which converts the unix epoch numbers to JavaScript date objects,
+        // which the date and time input fields need
         vm.entries = response.data.map(sanitizeEntriesFromDB);
       }).catch(function (error) {
         console.log('/entries GET error:', error);
       });
   };
+
+  // get projects from server to show in add entry select field
   vm.getProjects = function() {
     $http.get('/projects').then(function(response) {
         console.log('/projects GET success:', response.data);
@@ -35,7 +53,10 @@ app.controller('EntriesController', ['$http', function ($http) {
         console.log('/projects GET error:', error);
       });
   };
+
+  // add new entry to database
   vm.addEntry = function () {
+    // add appropriate date values to the start and end times, used for checking for overlapping times
     vm.newEntry.start_time = addDateToTime(vm.newEntry.entry_date, vm.newEntry.start_time);
     vm.newEntry.end_time = addDateToTime(vm.newEntry.entry_date, vm.newEntry.end_time);
 
@@ -49,11 +70,16 @@ app.controller('EntriesController', ['$http', function ($http) {
     $http.post('/entries', sanitizeEntryForDB(vm.newEntry))
     .then(function(response) {
       console.log('/entries POST success:', response);
+      // clear the form
+      vm.newEntry = {};
+      // refresh the list of entries
       vm.getEntries();
     }).catch(function(error) {
       console.log('/entries POST error:', error);
     });
   };
+
+  // delete an entry from the database by id
   vm.deleteEntry = function (id) {
     console.log('delete entry:', id);
     const route = '/entries/' + id;
@@ -66,6 +92,7 @@ app.controller('EntriesController', ['$http', function ($http) {
     });
   };
 
+  // assign values to the properties of the vm.sort object
   vm.sortEntries = function(property) {
     if (vm.sort.reverse === null || vm.sort.column !== property) {
       vm.sort.reverse = false;

@@ -2,7 +2,8 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
 
-// get route params with "/route/:paramName, then reference it as req.params.paramName"
+// get all projects, including the total hours worked for each project,
+// which is a sum of hours for all entries for that project, labeled "total_hours"
 router.get('/', (req, res) => {
   console.log('/projects GET hit');
   const queryText = 
@@ -23,6 +24,7 @@ router.get('/', (req, res) => {
     });
 });
 
+// add new project (just uses "name")
 router.post('/', (req, res) => {
   const newProject = req.body;
   console.log('/projects POST hit:', newProject);
@@ -38,6 +40,7 @@ router.post('/', (req, res) => {
   });
 });
 
+// update project by id, with the project to update passed as data
 router.put('/:id', (req, res) => {
   const projectId = req.params.id;
   const propsToUpdate = req.body;
@@ -55,6 +58,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
+// delete project by id
 router.delete('/:id', (req, res) => {
   const projectId = req.params.id;
   console.log(`/projects/${projectId} DELETE hit`);
