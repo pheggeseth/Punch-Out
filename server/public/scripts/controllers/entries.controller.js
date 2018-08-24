@@ -26,7 +26,6 @@ app.controller('EntriesController', ['$http', function ($http) {
           entry.entry_date = new Date(+entry.entry_date);
           entry.start_time = new Date(+entry.start_time);
           entry.end_time = new Date(+entry.end_time);
-          // entry.hours = (+entry.end_time - +entry.start_time) / HOUR;
           Object.defineProperty(entry, 'hours', {
             get: function() {
               return (this.end_time.getTime() - this.start_time.getTime()) / HOUR;
@@ -83,7 +82,13 @@ app.controller('EntriesController', ['$http', function ($http) {
   vm.updateEntry = function(id) {
     if (id) {
       console.log('update entry '+id);
-      $http.put('/entries/' + id, vm.editingEntry)
+      // copy object to send
+      const entryToSend = Object.assign({}, vm.editingEntry);
+      // change date/time properties back to unix epoch numbers for storing in server
+      entryToSend.entry_date = entryToSend.entry_date.getTime();
+      entryToSend.start_time = entryToSend.start_time.getTime();
+      entryToSend.end_time = entryToSend.end_time.getTime();
+      $http.put('/entries/' + id, entryToSend)
         .then(function(response) {
           console.log(`/entries/${id} PUT success:`, response);
           vm.getEntries();

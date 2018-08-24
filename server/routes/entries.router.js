@@ -43,14 +43,16 @@ router.put('/:id', (req, res) => {
   console.log(`/entries/${entryId} PUT hit:`, updatedEntry);
   
   const queryText = `UPDATE "entries"
-    SET "text" = $2, "project_id" = $3, "entry_date" = $4
+    SET "text" = $2, "project_id" = $3, "entry_date" = $4, "start_time" = $5, "end_time" = $6
     WHERE "id" = $1;`;
 
   pool.query(queryText, [
     entryId, 
     updatedEntry.text, 
     updatedEntry.project_id, 
-    updatedEntry.entry_date
+    updatedEntry.entry_date,
+    updatedEntry.start_time,
+    updatedEntry.end_time
   ]).then(result => {
       console.log(`/entries/${entryId} PUT success:`, result);
       res.sendStatus(200);

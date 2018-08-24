@@ -70,13 +70,11 @@
       <td ng-show="vm.editingEntry.id === entry.id">
         <input ng-model="vm.editingEntry.entry_date" type="date" />
       </td>
+      <!-- editing the 'hours' brings up start/end time fields -->
       <td ng-show="vm.editingEntry.id === entry.id">
-        <input ng-model="vm.editingEntry.start_time" type="time" />
-        <input ng-model="vm.editingEntry.end_time" type="time" />
+        <input ng-model="vm.editingEntry.start_time" type="time" step="900" />
+        <input ng-model="vm.editingEntry.end_time" type="time" step="900" />
       </td>
-      <!-- <td ng-show="vm.editingEntry.id === entry.id">
-        <input ng-model="vm.editingEntry.hours" type="number" min="0" step="0.25">
-      </td> -->
       <!-- The delete cell is replaced with a cell of the same size,
       but with two "buttons" inside: a confirm and an undo button.
       Confirm saves the changes to the database, while undo abandons changes 
