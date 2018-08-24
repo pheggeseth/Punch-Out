@@ -20,39 +20,45 @@ router.get('/', (req, res) => {
 
 router.post('/', (req, res) => {
   const entryToAdd = req.body; // This the data we sent
-    console.log('/entries POST hit:', entryToAdd); // Has a name, size and cost
-    
-    const queryText = `INSERT INTO "entries" 
-      ("text", "project_id", "entry_date", "start_time", "end_time") 
-      VALUES ($1, $2, $3, $4, $5);`;
-    
-    pool.query(queryText, [
-      entryToAdd.text, 
-      entryToAdd.project_id, 
-      entryToAdd.entry_date, 
-      entryToAdd.start_time, 
-      entryToAdd.end_time
-    ]).then(() => res.sendStatus(201))
-    .catch(error => {
-      console.log('Error in POST:', error);
-      res.sendStatus(500);
-    });
+  console.log('/entries POST hit:', entryToAdd); // Has a name, size and cost
+  
+  const queryText = `INSERT INTO "entries" 
+    ("text", "project_id", "entry_date", "start_time", "end_time") 
+    VALUES ($1, $2, $3, $4, $5);`;
+  
+  pool.query(queryText, [
+    entryToAdd.text, 
+    entryToAdd.project_id, 
+    entryToAdd.entry_date, 
+    entryToAdd.start_time, 
+    entryToAdd.end_time
+  ]).then(() => res.sendStatus(201))
+  .catch(error => {
+    console.log('Error in POST:', error);
+    res.sendStatus(500);
+  });
 });
 
 router.put('/:id', (req, res) => {
-  // POSTGRESQL SAMPLE PUT
-  //  const updatedShoe = req.body;
-  //  const queryText = `UPDATE "shoes" 
-  //                     SET "name" = $1, "cost" = $2, "size" = $3
-  //                     WHERE "id" = $4;`;
-  //  pool.query(queryText, [updatedShoe.name,
-  //                         updatedShoe.cost, 
-  //                         updatedShoe.size, 
-  //                         updatedShoe.id]).then( (result) => {
-  //                             res.sendStatus(200);
-  //                         }).catch( (error) => {
-  //                             res.sendStatus(500);
-  //                         });
+  const entryId = req.params.id;
+  const updatedEntry = req.body;
+  console.log(`/entries/${entryId} PUT hit:`, updatedEntry);
+  
+  const queryText = `UPDATE "entries"
+    SET "text" = $2, "project_id" = $3, "entry_date" = $4
+    WHERE "id" = $1;`;
+
+  pool.query(queryText, [
+    entryId, 
+    updatedEntry.text, 
+    updatedEntry.project_id, 
+    updatedEntry.entry_date
+  ]).then(result => {
+      console.log(`/entries/${entryId} PUT success:`, result);
+      res.sendStatus(200);
+  }).catch(error => {
+    console.log(`/entries/${entryId} PUT error:`, error);
+  });
 });
 
 router.delete('/:id', (req, res) => {

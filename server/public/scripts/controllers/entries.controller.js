@@ -75,6 +75,14 @@ app.controller('EntriesController', ['$http', function ($http) {
   vm.updateEntry = function(id) {
     if (id) {
       console.log('update entry '+id);
+      $http.put('/entries/' + id, vm.editingEntry)
+        .then(function(response) {
+          console.log(`/entries/${id} PUT success:`, response);
+          vm.getEntries();
+          vm.editingEntry = {};
+        }).catch(function(error) {
+          console.log(`/entries/${id} PUT error:`, error);
+        });
     } else {
       vm.editingEntry = {};
     }
