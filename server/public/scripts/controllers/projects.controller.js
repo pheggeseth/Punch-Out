@@ -18,7 +18,6 @@ app.controller('ProjectsController', ['$http', function($http) {
       })
       .catch(function(error) {
         console.log('/projects GET error:', error);
-        
       });
   };
 

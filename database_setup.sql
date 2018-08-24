@@ -15,31 +15,30 @@ CREATE TABLE entries (
 	id SERIAL PRIMARY KEY,
 	text VARCHAR(255),
 	project_id integer REFERENCES projects,
-	entry_date date,
-	start_time time,
-	end_time time
+	entry_date bigint,
+	start_time bigint,
+	end_time bigint
 );
+DELETE FROM entries;
 INSERT INTO entries ("text", "project_id", "entry_date", "start_time", "end_time") VALUES 
-('entry 1', '1', '8/8/18', '9:00 AM', '11:30 AM'),
-('entry 2', '1', '8/8/18', '9:00 AM', '11:00 AM'),
-('entry 3', '2', '9/9/19', '9:00 AM', '10:30 AM');
+('entry 1', '1', 1533736800000, 1533736800000, 1533740400000),
+('entry 2', '1', 1533736800000, 1533736800000, 1533745800000),
+('entry 3', '2', 1536501600000, 1536501600000, 1536508800000);
 SELECT * FROM entries;
 
 
 -- get all entries with entry_date formated as 'MM/DD/YY', along with "project_name" and "hours"
-SELECT "entries".*,
-	"projects"."name" as "project_name", 
-	DATE_PART('hour', "entries"."end_time"::time - "entries"."start_time"::time) + 
-	DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60 AS "hours" 
+SELECT "entries".*, "projects"."name" as "project_name"
 	FROM "entries" JOIN "projects" ON "entries"."project_id" = "projects"."id"
 	ORDER BY "entries"."id" ASC;
 
--- get all projects, including the "total_hours" from all entries for that project (0 if null)
-SELECT "projects".*, 
+-- get all projects, including the "total_hours" from all entries for that project
+SELECT "projects".*,
 	COALESCE(
-		SUM(
-			DATE_PART('hour', "entries"."end_time"::time - "entries"."start_time"::time) + 
-			DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60
-		)
-	, 0) AS "total_hours" 
-	FROM "projects" LEFT JOIN "entries" ON "projects"."id" = "entries"."project_id" GROUP BY "projects"."id" ORDER BY "projects"."id";
+		SUM(("entries"."end_time" - "entries"."start_time") / 1000 / 60 / 60)
+	, 0) 
+	AS "total_hours"
+	FROM "projects" 
+	LEFT JOIN "entries" ON "projects"."id" = "entries"."project_id" 
+	GROUP BY "projects"."id" ORDER BY "projects"."id";
+
