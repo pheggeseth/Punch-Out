@@ -119,7 +119,7 @@ app.controller('EntriesController', ['$http', function ($http) {
 
   function entryTimesOverlap(entry) {
     for (let e of vm.entries) {
-      if (entry.start_time < e.end_time && entry.end_time > e.start_time) {
+      if (entry.id !== e.id && entry.start_time < e.end_time && entry.end_time > e.start_time) {
         return true;
       }
     }
