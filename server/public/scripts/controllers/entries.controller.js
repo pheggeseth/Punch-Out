@@ -36,10 +36,15 @@ app.controller('EntriesController', ['$http', function ($http) {
       });
   };
   vm.addEntry = function () {
-    if(anyEmptyValues(vm.newEntry)) {
-      showMessage('must complete all fields');
+    vm.newEntry.start_time = addDateToTime(vm.newEntry.entry_date, vm.newEntry.start_time);
+    vm.newEntry.end_time = addDateToTime(vm.newEntry.entry_date, vm.newEntry.end_time);
+
+    let error = validateEntry(vm.newEntry);
+    if (error) {
+      showMessage(error);
       return;
     }
+    
     console.log('add new entry:', vm.newEntry);
     $http.post('/entries', sanitizeEntryForDB(vm.newEntry))
     .then(function(response) {
@@ -76,10 +81,12 @@ app.controller('EntriesController', ['$http', function ($http) {
 
   vm.updateEntry = function(id) {
     if (id) {
-      if(anyEmptyValues(vm.editingEntry)) {
-        showMessage('must complete all fields');
+      let error = validateEntry(vm.editingEntry);
+      if (error) {
+        showMessage(error);
         return;
       }
+      
       console.log('update entry '+id);
       $http.put('/entries/' + id, sanitizeEntryForDB(vm.editingEntry))
       .then(function(response) {
@@ -94,8 +101,29 @@ app.controller('EntriesController', ['$http', function ($http) {
     }
   }
 
+  function validateEntry(entry) {
+    if (anyEmptyValues(entry)) {
+      return 'must complete all fields';
+    } else if (entry.start_time >= entry.end_time || entry.end_time < entry.start_time) {
+      return 'entry times must be valid';
+    } else if (entryTimesOverlap(entry)) {
+      return 'entry must not overlap with existing entries';
+    } else {
+      return null;
+    }
+  }
+
   function anyEmptyValues(object) {
     return Object.values(object).some(value => !value);
+  }
+
+  function entryTimesOverlap(entry) {
+    for (let e of vm.entries) {
+      if (entry.start_time < e.end_time && entry.end_time > e.start_time) {
+        return true;
+      }
+    }
+    return false;
   }
 
   function showMessage(message) {
@@ -118,12 +146,20 @@ app.controller('EntriesController', ['$http', function ($http) {
   }
 
   function sanitizeEntryForDB(entry) {
-    let sanitized = Object.assign({}, entry);
+    let s = Object.assign({}, entry);
     // convert dates back to unix epoch numbers for storing in db
-    sanitized.entry_date = sanitized.entry_date.getTime();
-    sanitized.start_time = sanitized.start_time.getTime();
-    sanitized.end_time = sanitized.end_time.getTime();
-    return sanitized;
+    // first add the entry_date to the start and end times
+    s.start_time = addDateToTime(s.entry_date, s.start_time).getTime();
+    s.end_time = addDateToTime(s.entry_date, s.end_time).getTime();
+    s.entry_date = s.entry_date.getTime();
+    return s;
+  }
+
+  function addDateToTime(date, time) {
+    time.setUTCMonth(date.getUTCMonth());
+    time.setUTCDate(date.getUTCDate());
+    time.setUTCFullYear(date.getUTCFullYear());
+    return time;
   }
 
   vm.getEntries(); // get all entries on controller load

@@ -24,6 +24,14 @@
         ng-click="vm.sortEntries('entry_date')" width="10%">
       Date
     </th>
+    <th ng-class="{sort: vm.sort.column === 'start_time', reverse: vm.sort.reverse}" 
+        ng-click="vm.sortEntries('start_time')" width="10%">
+      Start Time
+    </th>
+    <th ng-class="{sort: vm.sort.column === 'end_time', reverse: vm.sort.reverse}" 
+        ng-click="vm.sortEntries('end_time')" width="10%">
+      End Time
+    </th>
     <th ng-class="{sort: vm.sort.column === 'hours', reverse: vm.sort.reverse}" 
         ng-click="vm.sortEntries('hours')" width="10%">
       Hours
@@ -36,9 +44,10 @@
       <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.text}}</td>
       <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.project_name}}</td>
       <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.entry_date | date:'M/d/yy'}}</td>
-      <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.hours}}</td>
-      <!-- Click this table cell to delete an entry. -->
-      <td class="delete" ng-click="vm.deleteEntry(entry.id)" ng-hide="vm.editingEntry.id === entry.id">X</td>
+      <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.start_time | date: 'h:mm a'}}</td>
+      <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.end_time | date: 'h:mm a'}}</td>
+      
+      
       
       <!-- Edit fields. A shallow clone of the entry to edit is stored in vm.editingEntry, 
       which is linked to these fields. -->
@@ -56,8 +65,13 @@
       <!-- editing the 'hours' brings up start/end time fields -->
       <td ng-show="vm.editingEntry.id === entry.id">
         <input ng-model="vm.editingEntry.start_time" type="time" step="900" />
+      </td>
+      <td ng-show="vm.editingEntry.id === entry.id">
         <input ng-model="vm.editingEntry.end_time" type="time" step="900" />
       </td>
+      <td ng-dblclick="vm.editEntry($index)">{{entry.hours}}</td>
+      <!-- Click this table cell to delete an entry. -->
+      <td class="delete" ng-click="vm.deleteEntry(entry.id)" ng-hide="vm.editingEntry.id === entry.id">X</td>
       <!-- The delete cell is replaced with a cell of the same size,
       but with two "buttons" inside: a confirm and an undo button.
       Confirm saves the changes to the database, while undo abandons changes 
