@@ -81,14 +81,25 @@ app.controller('EntriesController', ['$http', function ($http) {
 
   // delete an entry from the database by id
   vm.deleteEntry = function (id) {
-    console.log('delete entry:', id);
-    const route = '/entries/' + id;
-    $http.delete(route)
-    .then(function(response) {
-      console.log(route + ' DELETE success:', response);
-      vm.getEntries();
-    }).catch(function(error) {
-      console.log(route + ' DELETE error:', error);
+    swal({
+      title: "Are you sure?",
+      text: "You cannot undo this action.",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    })
+    .then((willDelete) => {
+      if (willDelete) {
+        console.log('delete entry:', id);
+        const route = '/entries/' + id;
+        $http.delete(route)
+        .then(function(response) {
+          console.log(route + ' DELETE success:', response);
+          vm.getEntries();
+        }).catch(function(error) {
+          console.log(route + ' DELETE error:', error);
+        });
+      } 
     });
   };
 

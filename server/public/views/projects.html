@@ -1,8 +1,8 @@
 {{vm.message}}
 <h2>Add Project</h2>
 <form id="add-project-form" ng-submit="vm.addProject()">
-  <input ng-model="vm.newProject.name" type="text" />
-  <button type="submit">Submit</button>
+  <input ng-model="vm.newProject.name" type="text" placeholder="Project Name"/>
+  <button class="add" type="submit"><i class="fas fa-plus"></i></button>
 </form>
 <h2>Projects</h2>
 <table>
@@ -15,7 +15,7 @@
         ng-click="vm.sortProjects('total_hours')" width="15%">
       Total Hours
     </th>
-    <th width="5%"></th>
+    <th width="10%">Actions</th>
   </thead>
   <tbody>
     <tr height="30px" ng-repeat="project in vm.projects | orderBy:vm.sort.column:vm.sort.reverse">
@@ -30,8 +30,8 @@
           <button ng-click="vm.editingProject = {}">Cancel</button>
         </form>
       </td>
-      <td>{{project.total_hours}}</td>
-      <td class="delete" ng-click="vm.deleteProject(project.id)">X</td>
+      <td class="center">{{project.total_hours}}</td>
+      <td class="delete" ng-click="vm.deleteProject(project.id)"><i class="far fa-trash-alt"></i></td>
     </tr>
   </tbody>
 </table>

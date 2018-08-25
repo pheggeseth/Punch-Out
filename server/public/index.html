@@ -18,6 +18,7 @@
   <script src="./vendors/angular-material.min.js"></script> -->
 
   <!-- Client JS -->
+  <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
   <script src="./scripts/client.js"></script>
   <script src="./scripts/controllers/entries.controller.js"></script>
   <script src="./scripts/controllers/projects.controller.js"></script>
@@ -26,27 +27,23 @@
   <!-- Client CSS -->
   <link rel="stylesheet" type="text/css" media="screen" href="./styles/style.css" />
   <link rel="stylesheet" type="text/css" media="screen" href="./styles/css/all.css" />
+  <link href="https://fonts.googleapis.com/css?family=Press+Start+2P" rel="stylesheet">
 </head>
 <body ng-app="punchout">
-  <!-- <div class="container" layout="column" layout-align="center start"> -->
   <div class="container">
-    <h1>Punch Out</h1>
+    <h1>PUNCH-OUT!!</h1>
     <nav class="main-nav">
-      <a href="#!/entries">Add Entry</a>
-      <a href="#!/projects">Manage Projects</a>
-      <a href="#!/reports">Reports</a>
+      <div>
+        <a class="link" href="#!/entries">Add Entry</a>
+      </div>
+      <div>
+        <a class="link" href="#!/projects">Manage Projects</a>
+      </div>
+      <div>
+        <a class="link" href="#!/reports">Reports</a>
+      </div>
+      
     </nav>
-    <!-- <md-nav-bar aria-label="navbar">
-      <md-nav-item md-nav-href="#!/entries" aria-label="Add Entry">
-        Add Entry
-      </md-nav-item>
-      <md-nav-item md-nav-href="#!/projects" aria-label="Manage Projects">
-        Manage Projects
-      </md-nav-item>
-      <md-nav-item md-nav-href="#!/reports" aria-label="Reports">
-        Reports
-      </md-nav-item>
-    </md-nav-bar> -->
     <ng-view></ng-view>
   </div>
 </body>

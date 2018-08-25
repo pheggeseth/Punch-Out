@@ -1,13 +1,18 @@
 <h2>Add Entry</h2>
 <form id="add-entry-form" ng-submit="vm.addEntry()">
   <input ng-model="vm.newEntry.text" class="entry-form-text" name="entry-form-text" type="text" placeholder="What did you do?" />
+  <span>Project Name</span>
+  <span>Entry Date</span>
+  <span>Start Time</span>
+  <span>End Time</span>
+  <span></span>
   <select ng-model="vm.newEntry.project_id" ng-options="project.id as project.name for project in vm.projects" />
     <option disabled selected value>Choose Project</option>
   </select>
   <input ng-model="vm.newEntry.entry_date" type="date" />
   <input ng-model="vm.newEntry.start_time" type="time" step="900" />
   <input ng-model="vm.newEntry.end_time" type="time" step="900" />
-  <button type="submit"><i class="fas fa-plus"></i></button>
+  <button class="add" type="submit"><i class="fas fa-plus"></i></button>
 </form>
 <h2>History</h2>
 <table>
@@ -17,7 +22,7 @@
       Entry
     </th>
     <th ng-class="{sort: vm.sort.column === 'project_name', reverse: vm.sort.reverse}"
-        ng-click="vm.sortEntries('project_name')" width="30%">
+        ng-click="vm.sortEntries('project_name')" width="20%">
       Project
     </th>
     <th ng-class="{sort: vm.sort.column === 'entry_date', reverse: vm.sort.reverse}"
