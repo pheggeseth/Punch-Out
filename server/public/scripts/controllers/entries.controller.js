@@ -9,7 +9,7 @@ app.controller('EntriesController', ['$http', function ($http) {
   vm.newEntry = {
     text: '',
     project_id: null,
-    entry_date: null,
+    entry_date: new Date(Date.now()),
     start_time: null,
     end_time: null
   };
@@ -106,7 +106,12 @@ app.controller('EntriesController', ['$http', function ($http) {
     vm.editingEntry = Object.assign({}, vm.entries[index]);
   }
 
+  // update an edited entry in the database
   vm.updateEntry = function(id) {
+    // add the entry_date to the start and end time from the editing inputs
+    vm.editingEntry.start_time = addDateToTime(vm.editingEntry.entry_date, vm.editingEntry.start_time);
+    vm.editingEntry.end_time = addDateToTime(vm.editingEntry.entry_date, vm.editingEntry.end_time);
+
     if (id) {
       let error = validateEntry(vm.editingEntry);
       if (error) {
@@ -126,8 +131,9 @@ app.controller('EntriesController', ['$http', function ($http) {
     } else {
       vm.editingEntry = {};
     }
-  }
+  } // end updateEntry
 
+  // checks if entry has any empty values, or if entry times overlap with existing entries
   function validateEntry(entry) {
     if (anyEmptyValues(entry)) {
       return 'must complete all fields';
@@ -138,7 +144,7 @@ app.controller('EntriesController', ['$http', function ($http) {
     } else {
       return null;
     }
-  }
+  } // validateEntry
 
   function anyEmptyValues(object) {
     return Object.values(object).some(value => !value);
@@ -155,13 +161,14 @@ app.controller('EntriesController', ['$http', function ($http) {
 
   function showMessage(message) {
     console.log(message);
-  }
+  } // end entryTimesOverlap
 
   function sanitizeEntriesFromDB(entry) {
     // convert epoch time strings to date objects
     entry.entry_date = new Date(+entry.entry_date);
     entry.start_time = new Date(+entry.start_time);
     entry.end_time = new Date(+entry.end_time);
+
     // add entry 'hours' getter, which computes the difference
     // between end_time and start_time in hours
     Object.defineProperty(entry, 'hours', {
@@ -170,24 +177,25 @@ app.controller('EntriesController', ['$http', function ($http) {
       }
     });
     return entry;
-  }
+  } // end sanitizeEntriesFromDB
 
+  // convert dates back to unix epoch numbers for storing in db
   function sanitizeEntryForDB(entry) {
     let s = Object.assign({}, entry);
-    // convert dates back to unix epoch numbers for storing in db
-    // first add the entry_date to the start and end times
-    s.start_time = addDateToTime(s.entry_date, s.start_time).getTime();
-    s.end_time = addDateToTime(s.entry_date, s.end_time).getTime();
+    s.start_time = s.start_time.getTime();
+    s.end_time = s.end_time.getTime();
     s.entry_date = s.entry_date.getTime();
     return s;
-  }
+  } // end sanitizeEntryForDB
 
+  // used for adding the entry_date to the start and end time,
+  // as time inputs create dates with the correct time but a date of 1/1/1970 (beginning of unix epoch)
   function addDateToTime(date, time) {
-    time.setUTCMonth(date.getUTCMonth());
-    time.setUTCDate(date.getUTCDate());
-    time.setUTCFullYear(date.getUTCFullYear());
+    time.setMonth(date.getMonth());
+    time.setDate(date.getDate());
+    time.setFullYear(date.getFullYear());
     return time;
-  }
+  } // addDateToTime
 
   vm.getEntries(); // get all entries on controller load
   vm.getProjects(); // get all projects on controller load

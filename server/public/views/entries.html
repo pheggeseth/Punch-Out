@@ -7,7 +7,7 @@
   <input ng-model="vm.newEntry.entry_date" type="date" />
   <input ng-model="vm.newEntry.start_time" type="time" step="900" />
   <input ng-model="vm.newEntry.end_time" type="time" step="900" />
-  <button type="submit">Submit</button>
+  <button type="submit"><i class="fas fa-plus"></i></button>
 </form>
 <h2>History</h2>
 <table>
@@ -26,11 +26,11 @@
     </th>
     <th ng-class="{sort: vm.sort.column === 'start_time', reverse: vm.sort.reverse}" 
         ng-click="vm.sortEntries('start_time')" width="10%">
-      Start Time
+      Start
     </th>
     <th ng-class="{sort: vm.sort.column === 'end_time', reverse: vm.sort.reverse}" 
         ng-click="vm.sortEntries('end_time')" width="10%">
-      End Time
+      End
     </th>
     <th ng-class="{sort: vm.sort.column === 'hours', reverse: vm.sort.reverse}" 
         ng-click="vm.sortEntries('hours')" width="10%">
@@ -41,11 +41,11 @@
   <tbody>
     <tr height="30px" ng-repeat="entry in vm.entries | orderBy:vm.sort.column:vm.sort.reverse">
       <!-- Display cells. Double clicking on any one of these causes edit fields to appear. -->
-      <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.text}}</td>
-      <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.project_name}}</td>
-      <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.entry_date | date:'M/d/yy'}}</td>
-      <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.start_time | date: 'h:mm a'}}</td>
-      <td  ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.end_time | date: 'h:mm a'}}</td>
+      <td class="left" ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.text}}</td>
+      <td class="center" ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.project_name}}</td>
+      <td class="center" ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.entry_date | date:'M/d/yy'}}</td>
+      <td class="center" ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.start_time | date: 'h:mm a'}}</td>
+      <td class="center" ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.end_time | date: 'h:mm a'}}</td>
       
       
       
@@ -69,16 +69,20 @@
       <td ng-show="vm.editingEntry.id === entry.id">
         <input ng-model="vm.editingEntry.end_time" type="time" step="900" />
       </td>
-      <td ng-dblclick="vm.editEntry($index)">{{entry.hours}}</td>
+      <td class="center" ng-dblclick="vm.editEntry($index)">{{entry.hours}}</td>
       <!-- Click this table cell to delete an entry. -->
-      <td class="delete" ng-click="vm.deleteEntry(entry.id)" ng-hide="vm.editingEntry.id === entry.id">X</td>
+      <td class="delete" 
+        ng-click="vm.deleteEntry(entry.id)" 
+        ng-hide="vm.editingEntry.id === entry.id">
+        <i class="far fa-trash-alt"></i>
+      </td>
       <!-- The delete cell is replaced with a cell of the same size,
       but with two "buttons" inside: a confirm and an undo button.
       Confirm saves the changes to the database, while undo abandons changes 
       and restores the display elements, showing the original table cells again. -->
       <td class="edit-actions" ng-show="vm.editingEntry.id === entry.id">
-          <div class="confirm" ng-click="vm.updateEntry(entry.id)">✔</div>
-          <div class="undo" ng-click="vm.updateEntry(null)">◀</div>
+          <div class="confirm" ng-click="vm.updateEntry(entry.id)"><i class="fas fa-check"></i></div>
+          <div class="undo" ng-click="vm.updateEntry(null)"><i class="fas fa-undo"></i></div>
       </td>
     </tr>
   </tbody>

@@ -62,9 +62,9 @@ button.delete-entry {
 form.edit-project-name, th {
   user-select: none;
 }
-th {
+/* th {
   height: 30px;
-}
+} */
 th:hover {
   cursor: pointer;
 }
@@ -76,6 +76,12 @@ th.sort::after {
 }
 th.sort.reverse::after {
   content: '▼'
+}
+td.center {
+  text-align: center;
+}
+th, td {
+  padding: 5px;
 }
 .edit-actions {
   padding: 0;
