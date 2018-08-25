@@ -80,6 +80,9 @@ table, th, td {
   justify-content: center;
   align-items: center;
 }
+#add-entry-form > span {
+  color: orange;
+}
 form > input, form > select, form > button {
   height: 100%;
 }
