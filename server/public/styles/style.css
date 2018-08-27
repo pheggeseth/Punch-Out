@@ -10,7 +10,7 @@ body {
   padding: 20px;
   margin: 20px auto;
 }
-h1, h2, .link {
+h1, h2, .nav-link > span {
   font-family: 'Press Start 2P', cursive;
   text-align: center;
   background: -webkit-linear-gradient(yellow, red);
@@ -24,28 +24,32 @@ h1 {
 h2 {
   font-size: 2em;
 }
-.link {
-  font-size: 1.25em;
-}
 nav.main-nav {
   height: 50px;
-  /* width: 100%; */
   display: flex;
   justify-content: space-around;
   align-items: center;
   margin: 20px;
 }
-nav > div {
-  width: 200px;
-  height: 100%;
+nav.main-nav a {
+  text-decoration: none;
+}
+button.nav-link {
+  width: 225px;
+  height: 50px;
+  font-size: 1.25em;
   background-color: #222;
+  border: 1px solid transparent;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+button.nav-link:hover {
+  background-color: #111;
   cursor: pointer;
 }
-nav > div:hover {
-  background-color: #111;
+button.nav-link:focus {
+  outline: none;
 }
 input {
   box-sizing: border-box;
@@ -56,6 +60,12 @@ input {
 }
 select {
   background-color: darkgray;
+}
+input:focus, select:focus {
+  outline-color: orange;
+}
+input[type="text"]::selection, input[type="date"]::selection, input[type="time"]::selection {
+  background: rgb(255, 200, 79);
 }
 input::placeholder {
   color: black;

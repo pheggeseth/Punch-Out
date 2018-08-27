@@ -33,16 +33,15 @@
   <div class="container">
     <h1>PUNCH-OUT!!</h1>
     <nav class="main-nav">
-      <div>
-        <a class="link" href="#!/entries">Add Entry</a>
-      </div>
-      <div>
-        <a class="link" href="#!/projects">Manage Projects</a>
-      </div>
-      <div>
-        <a class="link" href="#!/reports">Reports</a>
-      </div>
-      
+      <a href="#!/entries">
+        <button class="nav-link"><span>Add Entry</span></button>
+      </a>
+      <a href="#!/projects">
+        <button class="nav-link"><span>Manage Projects</span></button>
+      </a>
+      <a href="#!/reports">
+        <button class="nav-link"><span>Reports</span></button>
+      </a>
     </nav>
     <ng-view></ng-view>
   </div>
