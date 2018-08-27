@@ -168,3 +168,7 @@ th, td {
   background-color: lightgreen;
   border: none;
 }
+
+#bar {
+  width: 100%;
+}
