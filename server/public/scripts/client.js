@@ -14,3 +14,7 @@ app.config(function($routeProvider) {
     controller: 'ReportsController as vm'
   }).otherwise('/entries');
 });
+
+function showMessage(message) {
+  console.log(message);
+} // end entryTimesOverlap

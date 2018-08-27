@@ -170,10 +170,6 @@ app.controller('EntriesController', ['$http', function ($http) {
     return false;
   }
 
-  function showMessage(message) {
-    console.log(message);
-  } // end entryTimesOverlap
-
   function sanitizeEntriesFromDB(entry) {
     // convert epoch time strings to date objects
     entry.entry_date = new Date(+entry.entry_date);

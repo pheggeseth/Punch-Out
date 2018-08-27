@@ -15,6 +15,7 @@ h1, h2, .link {
   text-align: center;
   background: -webkit-linear-gradient(yellow, red);
   -webkit-background-clip: text;
+  background-clip: text;
   -webkit-text-fill-color: transparent;
 }
 h1 {

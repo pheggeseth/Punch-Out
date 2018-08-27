@@ -24,14 +24,20 @@
       </td>
       <!-- double click to show project name edit form -->
       <td ng-show="project.id === vm.editingProject.id">
-        <form class="edit-project-name" ng-submit="vm.updateProject($index)">
+        <!-- <form class="edit-project-name" ng-submit="vm.updateProject($index)"> -->
           <input ng-model="vm.editingProject.name" type="text" />
-          <button type="submit">Save</button>
-          <button ng-click="vm.editingProject = {}">Cancel</button>
-        </form>
+          <!-- <button type="submit">Save</button>
+          <button ng-click="vm.editingProject = {}">Cancel</button> -->
+        <!-- </form> -->
       </td>
       <td class="center">{{project.total_hours}}</td>
-      <td class="delete" ng-click="vm.deleteProject(project.id)"><i class="far fa-trash-alt"></i></td>
+      <td class="delete" ng-click="vm.deleteProject(project.id)" ng-hide="project.id === vm.editingProject.id">
+        <i class="far fa-trash-alt"></i>
+      </td>
+      <td class="edit-actions" ng-show="project.id === vm.editingProject.id">
+          <div class="confirm" ng-click="vm.updateProject(project.id)"><i class="fas fa-check"></i></div>
+          <div class="undo" ng-click="vm.updateProject(null)"><i class="fas fa-undo"></i></div>
+      </td>
     </tr>
   </tbody>
 </table>

@@ -37,17 +37,22 @@ app.controller('ProjectsController', ['$http', function($http) {
     vm.editingProject = Object.assign({}, vm.projects[index]);
   }
 
-  vm.updateProject = function(index) {
-    if (vm.editingProject.name !== undefined) {
-      $http.put(`/projects/${vm.editingProject.id}`, vm.editingProject)
+  vm.updateProject = function(id) {
+    if (id) {
+      if (vm.editingProject.name === '') {
+        showMessage('Project name must not be blank.');
+        return;
+      }
+      $http.put(`/projects/${id}`, vm.editingProject)
       .then(function(response) {
-        console.log(`/projects/${vm.editingProject.id} PUT success:`, response);
-        vm.projects[index] = vm.editingProject;
+        console.log(`/projects/${id} PUT success:`, response);
+        vm.getProjects();
         vm.editingProject = {};
-        // vm.getProjects();
       }).catch(function(error) {
-        console.log(`/projects/${vm.editingProject.id} PUT error:`, error);
+        console.log(`/projects/${id} PUT error:`, error);
       });
+    } else {
+      vm.editingProject = {};
     }
   };
 
