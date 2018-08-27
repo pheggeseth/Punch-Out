@@ -3,6 +3,7 @@ app.controller('ProjectsController', ['$http', function($http) {
   // vm.message = 'Hello from ProjectsController';
 
   vm.projects = [];
+  vm.newProject = {};
   vm.editingProject = {};
   vm.sort = {
     column: '',
@@ -23,6 +24,10 @@ app.controller('ProjectsController', ['$http', function($http) {
 
   vm.addProject = function() {
     console.log('add project:', vm.newProject);
+    if (!vm.newProject.name || vm.newProject.name === '') {
+      showMessage('Project name must not be blank.');
+      return;
+    }
     $http.post('/projects', vm.newProject)
       .then(function(response) {
         console.log('/projects POST success:', response);
@@ -57,26 +62,36 @@ app.controller('ProjectsController', ['$http', function($http) {
   };
 
   vm.deleteProject = function(id) {
-    console.log('delete project:', id);
-  
-    // delete all entries for this project first
-    const entriesRoute = '/entries/project/'+id;
-    $http.delete(entriesRoute).then(function(response) {
-      console.log(`Deleted all entries for project id: ${id}. Deleting project.`);
+    swal({
+      title: "Are you sure?",
+      text: "You cannot undo this action. Deleting a project will also delete all time entries for that project.",
+      icon: "warning",
+      buttons: true,
+      dangerMode: true,
+    }).then(willDelete => {
+      if (willDelete) {
+        console.log('delete project:', id);
       
-      // if entries delete is successful, delete the project
-      const projectRoute = '/projects/' + id;
-      $http.delete(projectRoute).then(function(response) {
-        console.log(projectRoute + ' DELETE success:', response);
-        vm.getProjects();
-      }).catch(function(error) {
-        console.log(projectRoute + ' DELETE error:', error);
-      });
+        // delete all entries for this project first
+        const entriesRoute = '/entries/project/'+id;
+        $http.delete(entriesRoute).then(function(response) {
+          console.log(`Deleted all entries for project id: ${id}. Deleting project.`);
+          
+          // if entries delete is successful, delete the project
+          const projectRoute = '/projects/' + id;
+          $http.delete(projectRoute).then(function(response) {
+            console.log(projectRoute + ' DELETE success:', response);
+            vm.getProjects();
+          }).catch(function(error) {
+            console.log(projectRoute + ' DELETE error:', error);
+          });
 
-    }).catch(function(error) {
-      console.log(`Error deleting entries for project id ${id}. Could not delete project:`, error);
-    });
-  };
+        }).catch(function(error) {
+          console.log(`Error deleting entries for project id ${id}. Could not delete project:`, error);
+        });
+      } // end if
+    }); // end swal then
+  }; // end deleteProject
 
   vm.sortProjects = function(property) {
     if (vm.sort.reverse === null || vm.sort.column !== property) {

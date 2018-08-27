@@ -168,7 +168,7 @@ app.controller('EntriesController', ['$http', function ($http) {
       }
     }
     return false;
-  }
+  } // end entryTimesoverlap
 
   function sanitizeEntriesFromDB(entry) {
     // convert epoch time strings to date objects

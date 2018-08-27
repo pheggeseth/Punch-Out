@@ -17,4 +17,5 @@ app.config(function($routeProvider) {
 
 function showMessage(message) {
   console.log(message);
+  swal("Warning!", message, "warning");
 } // end entryTimesOverlap
