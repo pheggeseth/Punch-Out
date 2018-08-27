@@ -69,11 +69,11 @@ Features that you would like to add at some point in the future.
 - [x] edit project name in project table
   - [x] double-click cell to edit name
     - [x] save and cancel buttons
-- [ ] sort entries by columns, ascending or descending
-- [ ] prevent user for creating a time entry that overlaps with an existing one
-- [ ] Reports View
-  - [ ] learn Chart.js for creating reports
-  - [ ] all projects with total hours for each (bar chart)
+- [x] sort entries by columns, ascending or descending
+- [x] prevent user for creating a time entry that overlaps with an existing one
+- [x] Reports View
+  - [x] learn Chart.js for creating reports
+  - [x] all projects with total hours for each (bar chart)
 
 ## Authors
 
