@@ -1,30 +1,18 @@
 <h2>Add Entry</h2>
 <form id="add-entry-form" ng-submit="vm.addEntry()">
-  <input required ng-model="vm.newEntry.text" class="entry-form-text" name="entry-form-text" type="text" placeholder="What did you do?" />
-  <select required ng-model="vm.newEntry.project_id" ng-options="project.id as project.name for project in vm.projects" />
+  <input ng-model="vm.newEntry.text" class="entry-form-text" name="entry-form-text" type="text" placeholder="What did you do?" />
+  <span>Project Name</span>
+  <span>Entry Date</span>
+  <span>Start Time</span>
+  <span>End Time</span>
+  <span></span>
+  <select ng-model="vm.newEntry.project_id" ng-options="project.id as project.name for project in vm.projects" />
     <option disabled selected value>Choose Project</option>
   </select>
-  <input required 
-    ng-model="vm.newEntry.entry_date" 
-    ng-focus="vm.dateType = 'date'" 
-    ng-blur="vm.dateType = 'text'" 
-    type="{{vm.dateType}}" 
-    placeholder="Date" />
-  <input required 
-    ng-model="vm.newEntry.start_time" 
-    ng-focus="vm.startTimeType = 'time'" 
-    ng-blur="vm.startTimeType = 'text'" 
-    type="{{vm.startTimeType}}" 
-    step="900" 
-    placeholder="Start Time"/>
-  <input required 
-    ng-model="vm.newEntry.end_time" 
-    ng-focus="vm.endTimeType = 'time'" 
-    ng-blur="vm.endTimeType = 'text'" 
-    type="{{vm.endTimeType}}" 
-    step="900" 
-    placeholder="End Time"/>
-  <button type="submit">Submit</button>
+  <input ng-model="vm.newEntry.entry_date" type="date" />
+  <input ng-model="vm.newEntry.start_time" type="time" step="900" />
+  <input ng-model="vm.newEntry.end_time" type="time" step="900" />
+  <button class="add" type="submit"><i class="fas fa-plus"></i></button>
 </form>
 <h2>History</h2>
 <table>
@@ -34,26 +22,73 @@
       Entry
     </th>
     <th ng-class="{sort: vm.sort.column === 'project_name', reverse: vm.sort.reverse}"
-        ng-click="vm.sortEntries('project_name')" width="30%">
+        ng-click="vm.sortEntries('project_name')" width="20%">
       Project
     </th>
     <th ng-class="{sort: vm.sort.column === 'entry_date', reverse: vm.sort.reverse}"
         ng-click="vm.sortEntries('entry_date')" width="10%">
       Date
     </th>
+    <th ng-class="{sort: vm.sort.column === 'start_time', reverse: vm.sort.reverse}" 
+        ng-click="vm.sortEntries('start_time')" width="10%">
+      Start
+    </th>
+    <th ng-class="{sort: vm.sort.column === 'end_time', reverse: vm.sort.reverse}" 
+        ng-click="vm.sortEntries('end_time')" width="10%">
+      End
+    </th>
     <th ng-class="{sort: vm.sort.column === 'hours', reverse: vm.sort.reverse}" 
         ng-click="vm.sortEntries('hours')" width="10%">
       Hours
     </th>
-    <th width="5%"></th>
+    <th width="10%">Actions</th>
   </thead>
   <tbody>
     <tr height="30px" ng-repeat="entry in vm.entries | orderBy:vm.sort.column:vm.sort.reverse">
-      <td>{{entry.text}}</td>
-      <td>{{entry.project_name}}</td>
-      <td>{{entry.entry_date}}</td>
-      <td>{{entry.hours}}</td>
-      <td class="delete" ng-click="vm.deleteEntry(entry.id)">X</td>
+      <!-- Display cells. Double clicking on any one of these causes edit fields to appear. -->
+      <td class="left" ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.text}}</td>
+      <td class="center" ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.project_name}}</td>
+      <td class="center" ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.entry_date | date:'M/d/yy'}}</td>
+      <td class="center" ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.start_time | date: 'h:mm a'}}</td>
+      <td class="center" ng-dblclick="vm.editEntry($index)" ng-hide="vm.editingEntry.id === entry.id">{{entry.end_time | date: 'h:mm a'}}</td>
+      
+      
+      
+      <!-- Edit fields. A shallow clone of the entry to edit is stored in vm.editingEntry, 
+      which is linked to these fields. -->
+      <td ng-show="vm.editingEntry.id === entry.id">
+        <input ng-model="vm.editingEntry.text" type="text">
+      </td>
+      <td ng-show="vm.editingEntry.id === entry.id">
+        <select ng-model="vm.editingEntry.project_id" ng-options="project.id as project.name for project in vm.projects" />
+          <option disabled selected value>Choose Project</option>
+        </select>
+      </td>
+      <td ng-show="vm.editingEntry.id === entry.id">
+        <input ng-model="vm.editingEntry.entry_date" type="date" />
+      </td>
+      <!-- editing the 'hours' brings up start/end time fields -->
+      <td ng-show="vm.editingEntry.id === entry.id">
+        <input ng-model="vm.editingEntry.start_time" type="time" step="900" />
+      </td>
+      <td ng-show="vm.editingEntry.id === entry.id">
+        <input ng-model="vm.editingEntry.end_time" type="time" step="900" />
+      </td>
+      <td class="center" ng-dblclick="vm.editEntry($index)">{{entry.hours}}</td>
+      <!-- Click this table cell to delete an entry. -->
+      <td class="delete" 
+        ng-click="vm.deleteEntry(entry.id)" 
+        ng-hide="vm.editingEntry.id === entry.id">
+        <i class="far fa-trash-alt"></i>
+      </td>
+      <!-- The delete cell is replaced with a cell of the same size,
+      but with two "buttons" inside: a confirm and an undo button.
+      Confirm saves the changes to the database, while undo abandons changes 
+      and restores the display elements, showing the original table cells again. -->
+      <td class="edit-actions" ng-show="vm.editingEntry.id === entry.id">
+          <div class="confirm" ng-click="vm.updateEntry(entry.id)"><i class="fas fa-check"></i></div>
+          <div class="undo" ng-click="vm.updateEntry(null)"><i class="fas fa-undo"></i></div>
+      </td>
     </tr>
   </tbody>
 </table>

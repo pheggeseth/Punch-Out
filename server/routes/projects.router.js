@@ -2,20 +2,19 @@ const express = require('express');
 const router = express.Router();
 const pool = require('../modules/pool');
 
-// get route params with "/route/:paramName, then reference it as req.params.paramName"
+// get all projects, including the total hours worked for each project,
+// which is a sum of hours for all entries for that project, labeled "total_hours"
 router.get('/', (req, res) => {
   console.log('/projects GET hit');
-  const queryText = `SELECT "projects".*, 
-    COALESCE(
-      SUM(
-        DATE_PART('hour', "entries"."end_time"::time - "entries"."start_time"::time) + 
-        DATE_PART('MINUTE', "entries"."end_time"::time - "entries"."start_time"::time) / 60
-      )
-    , 0) AS "total_hours" 
-    FROM "projects" 
-    LEFT JOIN "entries" ON "projects"."id" = "entries"."project_id" 
-    GROUP BY "projects"."id" 
-    ORDER BY "projects"."id" ASC;`;
+  const queryText = 
+  `SELECT "projects".*,
+	COALESCE(
+		SUM(("entries"."end_time" - "entries"."start_time")::float / 1000 / 60 / 60)
+	, 0)
+	AS "total_hours"
+	FROM "projects" 
+	LEFT JOIN "entries" ON "projects"."id" = "entries"."project_id" 
+	GROUP BY "projects"."id" ORDER BY "projects"."id";`;
     
   pool.query(queryText)
     .then(results => res.send(results.rows))
@@ -25,6 +24,7 @@ router.get('/', (req, res) => {
     });
 });
 
+// add new project (just uses "name")
 router.post('/', (req, res) => {
   const newProject = req.body;
   console.log('/projects POST hit:', newProject);
@@ -40,6 +40,7 @@ router.post('/', (req, res) => {
   });
 });
 
+// update project by id, with the project to update passed as data
 router.put('/:id', (req, res) => {
   const projectId = req.params.id;
   const propsToUpdate = req.body;
@@ -57,6 +58,7 @@ router.put('/:id', (req, res) => {
     });
 });
 
+// delete project by id
 router.delete('/:id', (req, res) => {
   const projectId = req.params.id;
   console.log(`/projects/${projectId} DELETE hit`);
