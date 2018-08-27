@@ -8,6 +8,7 @@ body {
   max-width: 90%;
   background-color: #404040;
   padding: 20px;
+  box-shadow: 0 2px 6px -1px rgba(0,0,0,0.7);
   margin: 20px auto;
 }
 h1, h2, .nav-link > span {
