@@ -16,6 +16,9 @@ app.controller('ReportsController', ['$http', function($http) {
           display: true,
           fontColor: 'orange',
           labelString: 'Total Hours'
+        },
+        ticks: {
+          beginAtZero: true
         }
       }],
       xAxes: [{

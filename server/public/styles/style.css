@@ -44,6 +44,7 @@ button.nav-link {
   display: flex;
   justify-content: center;
   align-items: center;
+  box-shadow: 0 2px 5px -1px rgba(0,0,0,0.5);
 }
 button.nav-link:hover {
   background-color: #111;
@@ -168,7 +169,11 @@ th, td {
   background-color: lightgreen;
   border: none;
 }
-
 #bar {
-  width: 100%;
+  margin: 40px auto 0 auto;
+}
+p {
+  margin-top: 0;
+  color: orange;
+  text-align: center;
 }
