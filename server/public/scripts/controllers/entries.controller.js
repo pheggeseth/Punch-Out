@@ -57,9 +57,11 @@ app.controller('EntriesController', ['$http', function ($http) {
   // add new entry to database
   vm.addEntry = function () {
     // add appropriate date values to the start and end times, used for checking for overlapping times
-    vm.newEntry.start_time = addDateToTime(vm.newEntry.entry_date, vm.newEntry.start_time);
-    vm.newEntry.end_time = addDateToTime(vm.newEntry.entry_date, vm.newEntry.end_time);
-
+    if (vm.newEntry.start_time && vm.newEntry.end_time) {
+      vm.newEntry.start_time = addDateToTime(vm.newEntry.entry_date, vm.newEntry.start_time);
+      vm.newEntry.end_time = addDateToTime(vm.newEntry.entry_date, vm.newEntry.end_time);
+    }
+    
     let error = validateEntry(vm.newEntry);
     if (error) {
       showMessage(error);
