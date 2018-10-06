@@ -6,74 +6,45 @@ In this app, you are able to add a time entry for a project, including the date,
 
 ## Built With
 
-AngularJS, Node, Express, PosgreSQL
+AngularJS, Node, Express, PosgreSQL, ChartJS
 
-## Getting Started
+## Installation/Setup
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+If you would like to setup this project on your local machine, first clone this repository:
+```bash
+mkdir punch_out
+cd punch_out
+git clone https://github.com/pheggeseth/Punch-Out
+npm install
+```
 
-### Installing
+You will then need to set up the database in PostgreSQL. If you don't have PostgreSQL installed on your machine, you will need to that first. If you are using a Mac, I recommend installing PostgreSQL with [Homebrew](https://brew.sh/) via the terminal.
 
-Steps to get the development environment running.
+To set up the database, you will need to create a database called "time_tracker" (I recommend using a program like [Postico](https://eggerapps.at/postico/)) run the SQL commands in the [database_setup.sql](database_setup.sql) file in the root directory of this project. This will create all of the necessary tables and fill the item and category tables with data.
 
-1. Download this project.
-2. `npm install`
-3. `npm start`
+After the database is set up, you can start the project by running `npm start` from the terminal.
 
-And so on...
+## Application Walkthrough
 
-## Screen Shot
+The primary view is where the user may enter timesheet entries and attribute them to a specific project.
 
-Include one or two screen shots of your project here (optional). Remove if unused.
+![entry-view](screenshots/punch-out-entry-view.png)
 
-### Completed Features
+The user enters in a description of what they did, chooses the name of the appropriate project, the date, as well as the start and end time.
 
-High level list of items completed.
+The user may also sort existing entries by any columns by clicking on the column heading, clicking again to toggle between sorting ascending or descending. Double-clicking on a row in the entry history table makes it possible to edit that particular entry, in which case the delete button for that row is replaced by an undo and confirm button. Clicking undo abandons the changes, while clicking save saves the changes to the row.
 
-- [x] Home Page
-  - [x] Create navbar with client-side routes
-    - [x] Add Entry
-    - [x] Manage Projects
-    - [x] Reports
-- [x] Entries View
-  - [x] Create add entry form
-    - [x] text input
-    - [x] project select
-      - [x] get list of projects from database
-    - [x] date input
-    - [x] start time input
-    - [x] end time input
-    - [x] submit button
-      - [x] call vm.deleteEntry function on click
-  - [x] Create entries table with ng-repeat
-    - [x] delete feature for each row
-      - [x] call vm.deleteEntry function on delete cell click
-- [x] Projects View
-  - [x] Create add project form
-    - [x] project name input
-    - [x] submit button
-      - [x] call vm.addProject function on button click
-  - [x] Create projects table with ng-repeat
-    - [x] project name
-    - [x] project total hours
-      - [x] create custom SUM/JOIN SQL query
-    - [x] delete feature for each row
-      - [x] call vm.deleteProject function on delete cell click
+![edit-view](screenshots/punch-out-entry-edit.png)
 
-  ???
+Clicking on "Manage Projects" brings the user to the projects view.
 
-### Stretch Goals
+![projects](screenshots/punch-out-project-view.png)
 
-Features that you would like to add at some point in the future.
+This view has similar functionality to the entries view in terms of being able to add a project, edit an existing project, or sort projects by column.
 
-- [x] edit project name in project table
-  - [x] double-click cell to edit name
-    - [x] save and cancel buttons
-- [x] sort entries by columns, ascending or descending
-- [x] prevent user for creating a time entry that overlaps with an existing one
-- [x] Reports View
-  - [x] learn Chart.js for creating reports
-  - [x] all projects with total hours for each (bar chart)
+The reports view shows a bar chart summarizing existing data.
+
+![reports](screenshots/punch-out-reports-view.png)
 
 ## Authors
 
